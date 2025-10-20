@@ -431,32 +431,21 @@
             padding: 1rem;
         }
 
-        .group-description {
+        .group-description-container {
             margin-bottom: 1rem;
+        }
+
+        .group-description {
             font-size: 0.95rem;
             line-height: 1.4;
-            max-height: 80px;
+            color: #555;
+        }
+
+        .group-description.short {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            position: relative;
-        }
-
-        .group-description.expanded {
-            max-height: none;
-        }
-
-        .group-description::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 20px;
-            background: linear-gradient(transparent, white);
-            pointer-events: none;
-        }
-
-        .group-description.expanded::after {
-            display: none;
         }
 
         .read-more-btn {
@@ -465,9 +454,14 @@
             color: var(--whatsapp-green);
             cursor: pointer;
             font-size: 0.9rem;
-            padding: 0;
+            padding: 5px 0;
             margin-top: 5px;
             display: block;
+            font-weight: 600;
+        }
+
+        .read-more-btn:hover {
+            text-decoration: underline;
         }
 
         .group-actions {
@@ -1117,11 +1111,12 @@
                     ? `<img src="${group.group_image}" alt="${groupName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
                     : '';
                 
-                // Truncate description for display
+                // Create description with read more functionality
                 const description = group.description || 'Join this WhatsApp group to connect with like-minded people.';
-                const words = description.split(' ');
-                const shortDescription = words.length > 20 ? words.slice(0, 20).join(' ') + '...' : description;
-                const needsReadMore = words.length > 20;
+                const needsReadMore = description.split(' ').length > 20;
+                const shortDescription = needsReadMore ? 
+                    description.split(' ').slice(0, 20).join(' ') + '...' : 
+                    description;
                 
                 groupCard.innerHTML = `
                     <div class="group-header">
@@ -1130,7 +1125,6 @@
                             <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
                         </div>
                         <div class="group-info">
-                            <!-- ACTUAL GROUP NAME HERE -->
                             <div class="group-name">${groupName}</div>
                             <div class="group-meta">
                                 <span>${group.category}</span>
@@ -1140,15 +1134,16 @@
                         </div>
                     </div>
                     <div class="group-body">
-                        <!-- ACTUAL GROUP DESCRIPTION HERE -->
-                        <div class="group-description" id="desc-${group.id}">
-                            ${shortDescription}
+                        <div class="group-description-container">
+                            <div class="group-description ${needsReadMore ? 'short' : ''}" id="desc-${group.id}">
+                                ${needsReadMore ? shortDescription : description}
+                            </div>
+                            ${needsReadMore ? `
+                                <button class="read-more-btn" onclick="toggleReadMore(${group.id}, '${description.replace(/'/g, "\\'")}')">
+                                    Read More
+                                </button>
+                            ` : ''}
                         </div>
-                        ${needsReadMore ? `
-                            <button class="read-more-btn" onclick="toggleDescription(${group.id}, '${description.replace(/'/g, "\\'")}')">
-                                Read More
-                            </button>
-                        ` : ''}
                         <div class="group-actions">
                             <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
                                 <i class="fab fa-whatsapp"></i> Join Group
@@ -1164,23 +1159,22 @@
             });
         }
 
-        // Toggle description expand/collapse
-        window.toggleDescription = function(groupId, fullDescription) {
+        // Toggle Read More functionality
+        window.toggleReadMore = function(groupId, fullDescription) {
             const descElement = document.getElementById(`desc-${groupId}`);
             const btnElement = descElement.nextElementSibling;
             
-            if (descElement.classList.contains('expanded')) {
-                // Collapse
-                const words = fullDescription.split(' ');
-                const shortDescription = words.length > 20 ? words.slice(0, 20).join(' ') + '...' : fullDescription;
-                descElement.innerHTML = shortDescription;
-                descElement.classList.remove('expanded');
-                btnElement.textContent = 'Read More';
-            } else {
-                // Expand
-                descElement.innerHTML = fullDescription;
-                descElement.classList.add('expanded');
+            if (descElement.classList.contains('short')) {
+                // Expand to show full description
+                descElement.textContent = fullDescription;
+                descElement.classList.remove('short');
                 btnElement.textContent = 'Read Less';
+            } else {
+                // Collapse to show short description
+                const shortDescription = fullDescription.split(' ').slice(0, 20).join(' ') + '...';
+                descElement.textContent = shortDescription;
+                descElement.classList.add('short');
+                btnElement.textContent = 'Read More';
             }
         };
 
@@ -1189,22 +1183,22 @@
             const sampleGroups = [
                 {
                     id: 1,
-                    group_name: "Tech Enthusiasts",
+                    group_name: "Tech Enthusiasts India",
                     group_image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face",
                     category: "Technology",
-                    country: "Global",
+                    country: "India",
                     language: "English",
-                    description: "Join our community of tech lovers to discuss latest trends, programming, and innovations. Share knowledge and grow together in this amazing community of developers and tech enthusiasts from around the world.",
+                    description: "Join our community of tech lovers to discuss latest trends, programming, and innovations. Share knowledge and grow together in this amazing community of developers and tech enthusiasts from around the world. We discuss everything from web development to artificial intelligence and machine learning.",
                     group_link: "https://chat.whatsapp.com/sample1"
                 },
                 {
                     id: 2,
-                    group_name: "Fitness Motivation",
+                    group_name: "Fitness Motivation Group",
                     group_image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face",
                     category: "Health",
                     country: "Global",
                     language: "English",
-                    description: "Get fit together! Share workout routines, nutrition tips, and motivate each other to stay healthy and active. Perfect for beginners and fitness experts alike.",
+                    description: "Get fit together! Share workout routines, nutrition tips, and motivate each other to stay healthy and active. Perfect for beginners and fitness experts alike. We share daily workout challenges, healthy recipes, and support each other's fitness journeys.",
                     group_link: "https://chat.whatsapp.com/sample2"
                 },
                 {
@@ -1214,7 +1208,7 @@
                     category: "Entertainment",
                     country: "Global",
                     language: "English",
-                    description: "Discuss your favorite movies, share reviews, get recommendations and talk about latest releases in cinema. Join our film community today!",
+                    description: "Discuss your favorite movies, share reviews, get recommendations and talk about latest releases in cinema. Join our film community today! We have weekly movie discussions, spoiler-free reviews, and recommendations for all genres.",
                     group_link: "https://chat.whatsapp.com/sample3"
                 }
             ];
@@ -1229,10 +1223,12 @@
                     ? `<img src="${group.group_image}" alt="${group.group_name}">`
                     : '';
                 
-                // Truncate description for display
-                const words = group.description.split(' ');
-                const shortDescription = words.length > 20 ? words.slice(0, 20).join(' ') + '...' : group.description;
-                const needsReadMore = words.length > 20;
+                // Create description with read more functionality
+                const description = group.description;
+                const needsReadMore = description.split(' ').length > 20;
+                const shortDescription = needsReadMore ? 
+                    description.split(' ').slice(0, 20).join(' ') + '...' : 
+                    description;
                 
                 groupCard.innerHTML = `
                     <div class="group-header">
@@ -1250,14 +1246,16 @@
                         </div>
                     </div>
                     <div class="group-body">
-                        <div class="group-description" id="desc-${group.id}">
-                            ${shortDescription}
+                        <div class="group-description-container">
+                            <div class="group-description ${needsReadMore ? 'short' : ''}" id="desc-${group.id}">
+                                ${needsReadMore ? shortDescription : description}
+                            </div>
+                            ${needsReadMore ? `
+                                <button class="read-more-btn" onclick="toggleReadMore(${group.id}, '${description.replace(/'/g, "\\'")}')">
+                                    Read More
+                                </button>
+                            ` : ''}
                         </div>
-                        ${needsReadMore ? `
-                            <button class="read-more-btn" onclick="toggleDescription(${group.id}, '${group.description.replace(/'/g, "\\'")}')">
-                                Read More
-                            </button>
-                        ` : ''}
                         <div class="group-actions">
                             <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
                                 <i class="fab fa-whatsapp"></i> Join Group
