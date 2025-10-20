@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         :root {
             --whatsapp-green: #25D366;
             --whatsapp-dark-green: #128C7E;
@@ -17,20 +24,13 @@
             --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
             background-color: var(--light-gray);
             color: var(--dark-gray);
             line-height: 1.6;
         }
 
-        /* Header Styles */
+        /* Header */
         header {
             background-color: var(--whatsapp-green);
             color: white;
@@ -57,36 +57,21 @@
             margin-right: 10px;
         }
 
-        .admin-info {
+        .admin-nav {
             display: flex;
-            align-items: center;
-            gap: 15px;
+            gap: 1rem;
         }
 
-        .admin-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--whatsapp-light-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--whatsapp-dark-green);
-        }
-
-        .logout-btn {
-            background-color: transparent;
+        .admin-nav a {
             color: white;
-            border: 1px solid white;
-            padding: 8px 15px;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
             border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
+            transition: background-color 0.3s;
         }
 
-        .logout-btn:hover {
-            background-color: white;
-            color: var(--whatsapp-dark-green);
+        .admin-nav a:hover, .admin-nav a.active {
+            background-color: var(--whatsapp-dark-green);
         }
 
         /* Main Content */
@@ -103,194 +88,181 @@
             color: var(--whatsapp-dark-green);
         }
 
-        /* Stats Section */
-        .stats-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background-color: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .stat-card h3 {
-            font-size: 1rem;
-            color: #777;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-card p {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--whatsapp-dark-green);
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-
-        .admin-tabs {
+        /* Tabs */
+        .tabs {
             display: flex;
+            margin-bottom: 2rem;
             border-bottom: 1px solid #ddd;
-            margin-bottom: 1.5rem;
         }
 
-        .admin-tab {
-            padding: 10px 20px;
+        .tab {
+            padding: 1rem 2rem;
             cursor: pointer;
             border-bottom: 3px solid transparent;
         }
 
-        .admin-tab.active {
+        .tab.active {
             border-bottom: 3px solid var(--whatsapp-green);
-            color: var(--whatsapp-green);
-            font-weight: 600;
+            color: var(--whatsapp-dark-green);
+            font-weight: bold;
         }
 
-        .admin-content {
-            min-height: 300px;
+        .tab-content {
+            display: none;
         }
 
-        .admin-table {
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Groups Display */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .group-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .group-header {
+            display: flex;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .group-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--whatsapp-light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--whatsapp-dark-green);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .group-avatar img {
             width: 100%;
-            border-collapse: collapse;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .admin-table th, .admin-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        .group-info {
+            flex: 1;
         }
 
-        .admin-table th {
-            background-color: var(--light-gray);
+        .group-name {
+            font-weight: bold;
+            margin-bottom: 5px;
             color: var(--whatsapp-dark-green);
         }
 
-        .admin-actions {
+        .group-meta {
+            font-size: 0.9rem;
+            color: #777;
             display: flex;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
-        .admin-btn {
-            padding: 6px 12px;
-            border-radius: 4px;
+        .group-meta span {
+            background-color: var(--light-gray);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .group-body {
+            padding: 1rem;
+        }
+
+        .group-description {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .group-link {
+            font-size: 0.9rem;
+            color: #777;
+            word-break: break-all;
+            margin-bottom: 1rem;
+        }
+
+        .group-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
             cursor: pointer;
-            font-size: 0.85rem;
-            border: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .approve-btn {
             background-color: var(--whatsapp-green);
             color: white;
+            border: none;
         }
 
         .reject-btn {
             background-color: #ff5252;
             color: white;
+            border: none;
         }
 
         .delete-btn {
             background-color: #ff5252;
             color: white;
+            border: none;
         }
 
-        .view-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        /* Login Form */
-        .login-container {
-            max-width: 400px;
-            margin: 5rem auto;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-
-        .login-container h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--whatsapp-dark-green);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .btn {
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             background-color: var(--whatsapp-green);
             color: white;
-            border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-            justify-content: center;
+            box-shadow: var(--shadow);
+            z-index: 300;
+            display: none;
         }
 
-        .btn:hover {
-            background-color: var(--whatsapp-dark-green);
+        .toast.error {
+            background-color: #ff5252;
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--whatsapp-dark-green);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 1rem;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .footer-links a {
-            color: white;
-            text-decoration: none;
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
         }
 
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 padding: 0 1rem;
@@ -300,179 +272,67 @@
                 padding: 0 1rem;
             }
 
-            .admin-panel {
-                padding: 1.5rem;
+            .groups-grid {
+                grid-template-columns: 1fr;
             }
 
-            .admin-table {
-                font-size: 0.85rem;
-            }
-
-            .admin-actions {
+            .admin-nav {
                 flex-direction: column;
+                gap: 0.5rem;
             }
-        }
-
-        /* Loading Spinner */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Check if user is logged in -->
-    <div id="adminContent" style="display: none;">
-        <!-- Header -->
-        <header>
-            <div class="header-container">
-                <div class="logo">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>GroupAdda Admin</span>
-                </div>
-                <div class="admin-info">
-                    <div class="admin-avatar">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <span>Admin User</span>
-                    <button class="logout-btn" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <span>GroupAdda Admin</span>
             </div>
-        </header>
+            <div class="admin-nav">
+                <a href="index.html">Back to Site</a>
+                <a href="#" class="active">Admin Panel</a>
+            </div>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <div class="container">
-            <!-- Stats Section -->
-            <section class="stats-section">
-                <div class="stat-card">
-                    <h3>Total Groups</h3>
-                    <p id="totalGroups">0</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Pending Requests</h3>
-                    <p id="pendingRequests">0</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Approved Groups</h3>
-                    <p id="approvedGroups">0</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Rejected Groups</h3>
-                    <p id="rejectedGroups">0</p>
-                </div>
-            </section>
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="section-title">GroupAdda Admin Panel</h1>
 
-            <!-- Admin Panel -->
-            <section class="admin-panel">
-                <h2 class="section-title">Group Management</h2>
-                <div class="admin-tabs">
-                    <div class="admin-tab active" data-tab="pending">Pending Requests</div>
-                    <div class="admin-tab" data-tab="approved">Approved Groups</div>
-                    <div class="admin-tab" data-tab="rejected">Rejected Groups</div>
-                </div>
-                <div class="admin-content">
-                    <div class="admin-tab-content" id="pendingTab">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Group Link</th>
-                                    <th>Category</th>
-                                    <th>Country</th>
-                                    <th>Language</th>
-                                    <th>Submitted</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pendingTableBody">
-                                <!-- Pending requests will be dynamically inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="admin-tab-content" id="approvedTab" style="display: none;">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Group Link</th>
-                                    <th>Category</th>
-                                    <th>Country</th>
-                                    <th>Language</th>
-                                    <th>Approved</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="approvedTableBody">
-                                <!-- Approved groups will be dynamically inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="admin-tab-content" id="rejectedTab" style="display: none;">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Group Link</th>
-                                    <th>Category</th>
-                                    <th>Country</th>
-                                    <th>Language</th>
-                                    <th>Rejected</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="rejectedTableBody">
-                                <!-- Rejected groups will be dynamically inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="pending">Pending Groups</div>
+            <div class="tab" data-tab="approved">Approved Groups</div>
         </div>
 
-        <!-- Footer -->
-        <footer>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="#terms">Terms</a>
-                <a href="#privacy">Privacy</a>
-                <a href="#disclaimer">Disclaimer</a>
-                <a href="#contact">Contact</a>
+        <!-- Pending Groups Tab -->
+        <div class="tab-content active" id="pendingTab">
+            <h2 class="section-title">Pending Groups for Approval</h2>
+            <div class="groups-grid" id="pendingGroupsGrid">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <p>Loading pending groups...</p>
+                </div>
             </div>
-            <p>&copy; 2023 GroupAdda. All rights reserved.</p>
-            <p>Admin Panel - Group Management System</p>
-        </footer>
-    </div>
+        </div>
 
-    <!-- Login Form (shown when not logged in) -->
-    <div id="loginForm">
-        <div class="login-container">
-            <h2><i class="fas fa-lock"></i> Admin Login</h2>
-            <form id="adminLoginForm">
-                <div class="form-group">
-                    <label for="adminUsername">Username</label>
-                    <input type="text" id="adminUsername" class="form-control" required>
+        <!-- Approved Groups Tab -->
+        <div class="tab-content" id="approvedTab">
+            <h2 class="section-title">Approved Groups</h2>
+            <div class="groups-grid" id="approvedGroupsGrid">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <p>Loading approved groups...</p>
                 </div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" class="form-control" required>
-                </div>
-                <button type="submit" class="btn" id="loginBtn">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-            </form>
-            <p style="text-align: center; margin-top: 1rem;">
-                <a href="index.html" style="color: var(--whatsapp-dark-green);">← Back to Homepage</a>
-            </p>
+            </div>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
     <script>
         // Supabase Configuration
@@ -483,114 +343,34 @@
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // DOM Elements
-        const loginForm = document.getElementById('loginForm');
-        const adminContent = document.getElementById('adminContent');
-        const adminLoginForm = document.getElementById('adminLoginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const adminTabs = document.querySelectorAll('.admin-tab');
-        const pendingTableBody = document.getElementById('pendingTableBody');
-        const approvedTableBody = document.getElementById('approvedTableBody');
-        const rejectedTableBody = document.getElementById('rejectedTableBody');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const pendingGroupsGrid = document.getElementById('pendingGroupsGrid');
+        const approvedGroupsGrid = document.getElementById('approvedGroupsGrid');
+        const toast = document.getElementById('toast');
 
-        // Check if user is already logged in
-        document.addEventListener('DOMContentLoaded', () => {
-            const isLoggedIn = localStorage.getItem('adminLoggedIn');
-            if (isLoggedIn === 'true') {
-                showAdminPanel();
-            } else {
-                showLoginForm();
-            }
-        });
-
-        // Admin Login
-        adminLoginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            // Show loading state
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = '<div class="loading"></div> Logging in...';
-            
-            // Simple authentication (in production, use secure authentication)
-            if (username === 'admin' && password === 'admin123') {
-                localStorage.setItem('adminLoggedIn', 'true');
-                showAdminPanel();
-            } else {
-                alert('Invalid credentials! Please try again.');
-            }
-            
-            // Reset button state
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-        });
-
-        // Logout
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('adminLoggedIn');
-            showLoginForm();
-        });
-
-        // Admin Tabs
-        adminTabs.forEach(tab => {
+        // Tab Switching
+        tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // Remove active class from all tabs
-                adminTabs.forEach(t => t.classList.remove('active'));
-                // Add active class to clicked tab
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
                 tab.classList.add('active');
-                
-                // Hide all tab content
-                document.querySelectorAll('.admin-tab-content').forEach(content => {
-                    content.style.display = 'none';
-                });
-                
-                // Show the selected tab content
                 const tabId = tab.getAttribute('data-tab') + 'Tab';
-                document.getElementById(tabId).style.display = 'block';
+                document.getElementById(tabId).classList.add('active');
+                
+                // Load data for the selected tab
+                if (tab.getAttribute('data-tab') === 'pending') {
+                    loadPendingGroups();
+                } else {
+                    loadApprovedGroups();
+                }
             });
         });
 
-        // Functions
-        function showLoginForm() {
-            loginForm.style.display = 'block';
-            adminContent.style.display = 'none';
-        }
-
-        function showAdminPanel() {
-            loginForm.style.display = 'none';
-            adminContent.style.display = 'block';
-            loadAdminData();
-        }
-
-        async function loadAdminData() {
-            try {
-                // Fetch counts for stats
-                const { count: pendingCount } = await supabase
-                    .from('groups_pending')
-                    .select('*', { count: 'exact', head: true });
-                
-                const { count: approvedCount } = await supabase
-                    .from('groups_approved')
-                    .select('*', { count: 'exact', head: true });
-                
-                // Update stats
-                document.getElementById('pendingRequests').textContent = pendingCount || 0;
-                document.getElementById('approvedGroups').textContent = approvedCount || 0;
-                document.getElementById('totalGroups').textContent = (pendingCount || 0) + (approvedCount || 0);
-                
-                // Load pending groups
-                await loadPendingGroups();
-                
-                // Load approved groups
-                await loadApprovedGroups();
-                
-            } catch (error) {
-                console.error('Error loading admin data:', error);
-                alert('Error loading admin data. Please check console for details.');
-            }
-        }
-
+        // Load Pending Groups
         async function loadPendingGroups() {
             try {
                 const { data: groups, error } = await supabase
@@ -598,39 +378,69 @@
                     .select('*')
                     .order('submitted_at', { ascending: false });
                 
-                if (error) throw error;
-                
-                pendingTableBody.innerHTML = '';
-                
-                if (groups.length === 0) {
-                    pendingTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No pending groups</td></tr>';
-                    return;
+                if (error) {
+                    throw error;
                 }
                 
-                groups.forEach(group => {
-                    const row = document.createElement('tr');
-                    const submittedDate = new Date(group.submitted_at).toLocaleDateString();
-                    
-                    row.innerHTML = `
-                        <td>${group.group_link}</td>
-                        <td>${group.category}</td>
-                        <td>${group.country}</td>
-                        <td>${group.language}</td>
-                        <td>${submittedDate}</td>
-                        <td class="admin-actions">
-                            <button class="admin-btn view-btn" onclick="viewGroupDetails(${group.id}, 'pending')">View</button>
-                            <button class="admin-btn approve-btn" onclick="approveGroup(${group.id})">Approve</button>
-                            <button class="admin-btn reject-btn" onclick="rejectGroup(${group.id})">Reject</button>
-                        </td>
-                    `;
-                    pendingTableBody.appendChild(row);
-                });
+                displayPendingGroups(groups || []);
             } catch (error) {
                 console.error('Error loading pending groups:', error);
-                pendingTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">Error loading pending groups</td></tr>';
+                pendingGroupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Error loading pending groups. Please try again later.</p>';
             }
         }
 
+        // Display Pending Groups
+        function displayPendingGroups(groups) {
+            if (groups.length === 0) {
+                pendingGroupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">No pending groups for approval.</p>';
+                return;
+            }
+            
+            pendingGroupsGrid.innerHTML = '';
+            
+            groups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                const groupName = group.group_name || "WhatsApp Group";
+                const avatarContent = group.group_image 
+                    ? `<img src="${group.group_image}" alt="${groupName}">`
+                    : '';
+                
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-avatar">
+                            ${avatarContent}
+                            <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
+                        </div>
+                        <div class="group-info">
+                            <div class="group-name">${groupName}</div>
+                            <div class="group-meta">
+                                <span>${group.category}</span>
+                                <span>${group.country}</span>
+                                <span>${group.language}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body">
+                        <div class="group-description">${group.description || 'No description provided.'}</div>
+                        <div class="group-link">${group.group_link}</div>
+                        <div class="group-actions">
+                            <button class="action-btn approve-btn" onclick="approveGroup(${group.id})">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="action-btn reject-btn" onclick="rejectGroup(${group.id})">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                pendingGroupsGrid.appendChild(groupCard);
+            });
+        }
+
+        // Load Approved Groups
         async function loadApprovedGroups() {
             try {
                 const { data: groups, error } = await supabase
@@ -638,57 +448,87 @@
                     .select('*')
                     .order('approved_at', { ascending: false });
                 
-                if (error) throw error;
-                
-                approvedTableBody.innerHTML = '';
-                
-                if (groups.length === 0) {
-                    approvedTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No approved groups</td></tr>';
-                    return;
+                if (error) {
+                    throw error;
                 }
                 
-                groups.forEach(group => {
-                    const row = document.createElement('tr');
-                    const approvedDate = new Date(group.approved_at).toLocaleDateString();
-                    
-                    row.innerHTML = `
-                        <td>${group.group_link}</td>
-                        <td>${group.category}</td>
-                        <td>${group.country}</td>
-                        <td>${group.language}</td>
-                        <td>${approvedDate}</td>
-                        <td class="admin-actions">
-                            <button class="admin-btn view-btn" onclick="viewGroupDetails(${group.id}, 'approved')">View</button>
-                            <button class="admin-btn delete-btn" onclick="deleteGroup(${group.id}, 'approved')">Delete</button>
-                        </td>
-                    `;
-                    approvedTableBody.appendChild(row);
-                });
+                displayApprovedGroups(groups || []);
             } catch (error) {
                 console.error('Error loading approved groups:', error);
-                approvedTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">Error loading approved groups</td></tr>';
+                approvedGroupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Error loading approved groups. Please try again later.</p>';
             }
         }
 
-        async function approveGroup(groupId) {
-            if (!confirm('Are you sure you want to approve this group?')) return;
+        // Display Approved Groups
+        function displayApprovedGroups(groups) {
+            if (groups.length === 0) {
+                approvedGroupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">No approved groups yet.</p>';
+                return;
+            }
             
+            approvedGroupsGrid.innerHTML = '';
+            
+            groups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                const groupName = group.group_name || "WhatsApp Group";
+                const avatarContent = group.group_image 
+                    ? `<img src="${group.group_image}" alt="${groupName}">`
+                    : '';
+                
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-avatar">
+                            ${avatarContent}
+                            <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
+                        </div>
+                        <div class="group-info">
+                            <div class="group-name">${groupName}</div>
+                            <div class="group-meta">
+                                <span>${group.category}</span>
+                                <span>${group.country}</span>
+                                <span>${group.language}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body">
+                        <div class="group-description">${group.description || 'No description provided.'}</div>
+                        <div class="group-link">${group.group_link}</div>
+                        <div class="group-actions">
+                            <button class="action-btn delete-btn" onclick="deleteGroup(${group.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                approvedGroupsGrid.appendChild(groupCard);
+            });
+        }
+
+        // Approve Group
+        async function approveGroup(groupId) {
             try {
-                // Get the pending group details
+                // Get the pending group
                 const { data: pendingGroup, error: fetchError } = await supabase
                     .from('groups_pending')
                     .select('*')
                     .eq('id', groupId)
                     .single();
                 
-                if (fetchError) throw fetchError;
+                if (fetchError) {
+                    throw fetchError;
+                }
                 
-                // Insert into approved table
-                const { error: insertError } = await supabase
+                // Insert into approved groups
+                const { data, error } = await supabase
                     .from('groups_approved')
                     .insert([
                         {
                             group_link: pendingGroup.group_link,
+                            group_name: pendingGroup.group_name,
+                            group_image: pendingGroup.group_image,
                             category: pendingGroup.category,
                             country: pendingGroup.country,
                             language: pendingGroup.language,
@@ -698,67 +538,83 @@
                         }
                     ]);
                 
-                if (insertError) throw insertError;
+                if (error) {
+                    throw error;
+                }
                 
-                // Delete from pending table
-                const { error: deleteError } = await supabase
+                // Delete from pending groups
+                await supabase
                     .from('groups_pending')
                     .delete()
                     .eq('id', groupId);
                 
-                if (deleteError) throw deleteError;
-                
-                alert('Group approved successfully!');
-                loadAdminData();
+                showToast('Group approved successfully!');
+                loadPendingGroups();
             } catch (error) {
                 console.error('Error approving group:', error);
-                alert('Error approving group. Please try again.');
+                showToast('Error approving group. Please try again.', true);
             }
         }
 
+        // Reject Group
         async function rejectGroup(groupId) {
-            if (!confirm('Are you sure you want to reject this group?')) return;
-            
             try {
                 const { error } = await supabase
                     .from('groups_pending')
                     .delete()
                     .eq('id', groupId);
                 
-                if (error) throw error;
+                if (error) {
+                    throw error;
+                }
                 
-                alert('Group rejected successfully!');
-                loadAdminData();
+                showToast('Group rejected successfully!');
+                loadPendingGroups();
             } catch (error) {
                 console.error('Error rejecting group:', error);
-                alert('Error rejecting group. Please try again.');
+                showToast('Error rejecting group. Please try again.', true);
             }
         }
 
-        async function deleteGroup(groupId, table) {
-            if (!confirm('Are you sure you want to delete this group?')) return;
+        // Delete Group
+        async function deleteGroup(groupId) {
+            if (confirm('Are you sure you want to delete this group?')) {
+                try {
+                    const { error } = await supabase
+                        .from('groups_approved')
+                        .delete()
+                        .eq('id', groupId);
+                    
+                    if (error) {
+                        throw error;
+                    }
+                    
+                    showToast('Group deleted successfully!');
+                    loadApprovedGroups();
+                } catch (error) {
+                    console.error('Error deleting group:', error);
+                    showToast('Error deleting group. Please try again.', true);
+                }
+            }
+        }
+
+        function showToast(message, isError = false) {
+            toast.textContent = message;
+            toast.className = 'toast';
+            if (isError) {
+                toast.classList.add('error');
+            }
+            toast.classList.add('show');
             
-            try {
-                const tableName = table === 'approved' ? 'groups_approved' : 'groups_pending';
-                const { error } = await supabase
-                    .from(tableName)
-                    .delete()
-                    .eq('id', groupId);
-                
-                if (error) throw error;
-                
-                alert('Group deleted successfully!');
-                loadAdminData();
-            } catch (error) {
-                console.error('Error deleting group:', error);
-                alert('Error deleting group. Please try again.');
-            }
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        function viewGroupDetails(groupId, table) {
-            alert(`Viewing details for group ID: ${groupId} from ${table} table`);
-            // In a real app, this would open a modal with group details
-        }
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPendingGroups();
+        });
     </script>
 </body>
 </html>
