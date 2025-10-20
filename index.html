@@ -176,6 +176,15 @@
             cursor: not-allowed;
         }
 
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -246,6 +255,51 @@
             font-size: 0.9rem;
             color: #777;
             margin-top: 0.5rem;
+        }
+
+        .auto-fetch-section {
+            background-color: var(--whatsapp-light-green);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .auto-fetch-section.show {
+            display: block;
+        }
+
+        .group-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .group-preview-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--whatsapp-light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .group-preview-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .group-preview-info {
+            flex: 1;
+        }
+
+        .group-preview-name {
+            font-weight: bold;
+            color: var(--whatsapp-dark-green);
         }
 
         .rules-section {
@@ -324,6 +378,13 @@
             color: var(--whatsapp-dark-green);
             font-size: 1.5rem;
             margin-right: 1rem;
+            overflow: hidden;
+        }
+
+        .group-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .group-info {
@@ -600,7 +661,25 @@
                 <div class="form-group">
                     <label for="groupLink">WhatsApp Group Invite Link *</label>
                     <input type="url" id="groupLink" class="form-control" required placeholder="https://chat.whatsapp.com/CluEPPD7DuiEkai8nxFiZP">
+                    <div class="form-note">Paste your WhatsApp group invite link. Group name and image will be fetched automatically.</div>
                 </div>
+                
+                <div class="auto-fetch-section" id="autoFetchSection">
+                    <h4>Group Preview</h4>
+                    <div class="group-preview">
+                        <div class="group-preview-avatar">
+                            <i class="fab fa-whatsapp" id="previewIcon"></i>
+                            <img id="previewImage" style="display: none;" alt="Group Image">
+                        </div>
+                        <div class="group-preview-info">
+                            <div class="group-preview-name" id="previewName">Group name will appear here</div>
+                            <button type="button" class="btn btn-secondary" id="fetchGroupInfoBtn" style="margin-top: 10px;">
+                                <i class="fas fa-sync-alt"></i> Fetch Group Info
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="groupCategory">Select Group Category *</label>
                     <select id="groupCategory" class="form-control" required>
@@ -703,6 +782,14 @@
         const groupsGrid = document.getElementById('groupsGrid');
         const findGroupsBtn = document.getElementById('findGroupsBtn');
         const toast = document.getElementById('toast');
+        
+        // Auto-fetch elements
+        const groupLinkInput = document.getElementById('groupLink');
+        const autoFetchSection = document.getElementById('autoFetchSection');
+        const fetchGroupInfoBtn = document.getElementById('fetchGroupInfoBtn');
+        const previewName = document.getElementById('previewName');
+        const previewImage = document.getElementById('previewImage');
+        const previewIcon = document.getElementById('previewIcon');
 
         // Event Listeners
         hamburgerMenu.addEventListener('click', () => {
@@ -720,12 +807,33 @@
 
         closeAddGroupModal.addEventListener('click', () => {
             addGroupModal.classList.remove('show');
+            resetAutoFetch();
         });
 
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === addGroupModal) {
                 addGroupModal.classList.remove('show');
+                resetAutoFetch();
+            }
+        });
+
+        // Auto-fetch group info when link is pasted
+        groupLinkInput.addEventListener('input', () => {
+            const link = groupLinkInput.value.trim();
+            if (link && isValidWhatsAppLink(link)) {
+                autoFetchSection.classList.add('show');
+            } else {
+                autoFetchSection.classList.remove('show');
+                resetPreview();
+            }
+        });
+
+        // Manual fetch button
+        fetchGroupInfoBtn.addEventListener('click', () => {
+            const link = groupLinkInput.value.trim();
+            if (link && isValidWhatsAppLink(link)) {
+                fetchWhatsAppGroupInfo(link);
             }
         });
 
@@ -734,6 +842,8 @@
             e.preventDefault();
             
             const groupLink = document.getElementById('groupLink').value;
+            const groupName = previewName.textContent !== 'Group name will appear here' ? previewName.textContent : 'WhatsApp Group';
+            const groupImage = previewImage.style.display !== 'none' ? previewImage.src : '';
             const category = document.getElementById('groupCategory').value;
             const country = document.getElementById('groupCountry').value;
             const language = document.getElementById('groupLanguage').value;
@@ -751,6 +861,8 @@
                     .insert([
                         { 
                             group_link: groupLink,
+                            group_name: groupName,
+                            group_image: groupImage,
                             category: category,
                             country: country,
                             language: language,
@@ -767,6 +879,7 @@
                 addGroupModal.classList.remove('show');
                 showToast('Group submitted for admin approval!');
                 addGroupForm.reset();
+                resetAutoFetch();
             } catch (error) {
                 console.error('Error submitting group:', error);
                 showToast('Error submitting group. Please try again.', true);
@@ -787,6 +900,75 @@
         });
 
         // Functions
+        function isValidWhatsAppLink(link) {
+            return link.includes('chat.whatsapp.com');
+        }
+
+        async function fetchWhatsAppGroupInfo(link) {
+            fetchGroupInfoBtn.disabled = true;
+            fetchGroupInfoBtn.innerHTML = '<div class="loading"></div> Fetching...';
+            
+            try {
+                // Use a CORS proxy to bypass CORS restrictions
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                const response = await fetch(proxyUrl + link);
+                const html = await response.text();
+                
+                // Parse the HTML to extract group info
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Extract group name from title or meta tags
+                let groupName = "WhatsApp Group";
+                const title = doc.querySelector('title');
+                if (title) {
+                    groupName = title.textContent.replace('WhatsApp Group Invite', '').trim();
+                    if (groupName === '') groupName = "WhatsApp Group";
+                }
+                
+                // Extract group image from meta tags
+                let groupImage = '';
+                const ogImage = doc.querySelector('meta[property="og:image"]');
+                if (ogImage) {
+                    groupImage = ogImage.getAttribute('content');
+                }
+                
+                // Update preview
+                previewName.textContent = groupName;
+                
+                if (groupImage) {
+                    previewImage.src = groupImage;
+                    previewImage.style.display = 'block';
+                    previewIcon.style.display = 'none';
+                } else {
+                    previewImage.style.display = 'none';
+                    previewIcon.style.display = 'flex';
+                }
+                
+                showToast('Group info fetched successfully!');
+            } catch (error) {
+                console.error('Error fetching group info:', error);
+                previewName.textContent = 'WhatsApp Group';
+                previewImage.style.display = 'none';
+                previewIcon.style.display = 'flex';
+                showToast('Could not fetch group info automatically. Please enter manually.', true);
+            } finally {
+                fetchGroupInfoBtn.disabled = false;
+                fetchGroupInfoBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Fetch Group Info';
+            }
+        }
+
+        function resetPreview() {
+            previewName.textContent = 'Group name will appear here';
+            previewImage.style.display = 'none';
+            previewIcon.style.display = 'flex';
+        }
+
+        function resetAutoFetch() {
+            autoFetchSection.classList.remove('show');
+            resetPreview();
+        }
+
         async function loadGroups() {
             try {
                 // Fetch approved groups from Supabase
@@ -818,20 +1000,19 @@
                 const groupCard = document.createElement('div');
                 groupCard.className = 'group-card';
                 
-                // Extract group name from WhatsApp link or use default
-                let groupName = "WhatsApp Group";
-                try {
-                    // Try to extract group name from WhatsApp API or use a fallback
-                    const url = new URL(group.group_link);
-                    groupName = group.group_name || "WhatsApp Group";
-                } catch (e) {
-                    // If URL parsing fails, use default name
-                }
+                // Use group name from database or default
+                const groupName = group.group_name || "WhatsApp Group";
+                
+                // Use group image if available, otherwise use WhatsApp icon
+                const avatarContent = group.group_image 
+                    ? `<img src="${group.group_image}" alt="${groupName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                    : '';
                 
                 groupCard.innerHTML = `
                     <div class="group-header">
                         <div class="group-avatar">
-                            <i class="fab fa-whatsapp"></i>
+                            ${avatarContent}
+                            <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
                         </div>
                         <div class="group-info">
                             <div class="group-name">${groupName}</div>
