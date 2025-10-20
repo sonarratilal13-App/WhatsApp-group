@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroupAdda - Find & Share WhatsApp Groups Worldwide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --whatsapp-green: #25D366;
+            --whatsapp-dark-green: #128C7E;
+            --whatsapp-light-green: #dcf8c6;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--whatsapp-green);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .hamburger-menu {
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            color: var(--dark-gray);
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            width: 200px;
+            z-index: 101;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--light-gray);
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        /* Search Section */
+        .search-section {
+            background-color: var(--whatsapp-dark-green);
+            padding: 1.5rem 2rem;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--whatsapp-green);
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--whatsapp-green);
+            color: var(--whatsapp-dark-green);
+        }
+
+        /* Add Group Section */
+        .add-group-section {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--whatsapp-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--whatsapp-dark-green);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 0.5rem;
+        }
+
+        .rules-section {
+            background-color: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .rules-section h3 {
+            margin-bottom: 1rem;
+            color: var(--whatsapp-dark-green);
+        }
+
+        .rules-section ul {
+            padding-left: 1.5rem;
+        }
+
+        .rules-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Groups Display */
+        .groups-section {
+            margin-top: 2rem;
+        }
+
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .group-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .group-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .group-header {
+            display: flex;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .group-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--whatsapp-light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--whatsapp-dark-green);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .group-info {
+            flex: 1;
+        }
+
+        .group-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--whatsapp-dark-green);
+        }
+
+        .group-meta {
+            font-size: 0.9rem;
+            color: #777;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .group-meta span {
+            background-color: var(--light-gray);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .group-body {
+            padding: 1rem;
+        }
+
+        .group-description {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .group-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .join-btn {
+            background-color: var(--whatsapp-green);
+            color: white;
+            border: none;
+        }
+
+        .share-btn {
+            background-color: transparent;
+            border: 1px solid var(--whatsapp-green);
+            color: var(--whatsapp-green);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--whatsapp-dark-green);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+
+            .search-section {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .add-group-section, .filter-section {
+                padding: 1.5rem;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .groups-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--whatsapp-green);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            z-index: 300;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <span>GroupAdda</span>
+            </div>
+            <div class="hamburger-menu" id="hamburgerMenu">
+                <i class="fas fa-bars"></i>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="#home">Home</a>
+                    <a href="#" id="openAddGroupModal">Add Group</a>
+                    <a href="#terms">Terms</a>
+                    <a href="#privacy">Privacy</a>
+                    <a href="#disclaimer">Disclaimer</a>
+                    <a href="#contact">Contact</a>
+                    <a href="admin.html" id="adminLink">Admin Panel</a>
+                </div>
+            </div>
+        </div>
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search WhatsApp Groups...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Add Group Section -->
+        <section class="add-group-section">
+            <h2 class="section-title">Share Your WhatsApp Group</h2>
+            <p>Reach more members by publishing your WhatsApp group on GroupAdda</p>
+            <button class="btn" id="openAddGroupBtn">
+                <i class="fas fa-plus"></i> Add WhatsApp Group
+            </button>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+            <h2 class="section-title">Find WhatsApp Groups</h2>
+            <div class="filter-form">
+                <div class="form-group">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter" class="form-control">
+                        <option value="">Any Category</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Education">Education</option>
+                        <option value="Jobs">Jobs</option>
+                        <option value="Business">Business</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Health">Health</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="countryFilter">Country</label>
+                    <select id="countryFilter" class="form-control">
+                        <option value="">Any Country</option>
+                        <option value="India">India</option>
+                        <option value="USA">USA</option>
+                        <option value="UK">UK</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="languageFilter">Language</label>
+                    <select id="languageFilter" class="form-control">
+                        <option value="">Any Language</option>
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; align-items: flex-end;">
+                    <button class="btn" id="findGroupsBtn">
+                        <i class="fas fa-search"></i> Find Groups
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Groups Display Section -->
+        <section class="groups-section">
+            <h2 class="section-title">Popular WhatsApp Groups</h2>
+            <div class="groups-grid" id="groupsGrid">
+                <!-- Group cards will be dynamically inserted here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Group Modal -->
+    <div class="modal" id="addGroupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add WhatsApp Group</h2>
+                <span class="close-modal" id="closeAddGroupModal">&times;</span>
+            </div>
+            <form id="addGroupForm">
+                <div class="form-group">
+                    <label for="groupLink">WhatsApp Group Invite Link *</label>
+                    <input type="url" id="groupLink" class="form-control" required placeholder="https://chat.whatsapp.com/CluEPPD7DuiEkai8nxFiZP">
+                </div>
+                <div class="form-group">
+                    <label for="groupCategory">Select Group Category *</label>
+                    <select id="groupCategory" class="form-control" required>
+                        <option value="">Select Category</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Education">Education</option>
+                        <option value="Jobs">Jobs</option>
+                        <option value="Business">Business</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Health">Health</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groupCountry">Select Group Country *</label>
+                    <select id="groupCountry" class="form-control" required>
+                        <option value="">Select Country</option>
+                        <option value="India">India</option>
+                        <option value="USA">USA</option>
+                        <option value="UK">UK</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groupLanguage">Select Group Language *</label>
+                    <select id="groupLanguage" class="form-control" required>
+                        <option value="">Select Language</option>
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groupTags">Enter Tags (comma separated)</label>
+                    <input type="text" id="groupTags" class="form-control" placeholder="Funny, Jokes, Mumbai, Students">
+                    <div class="form-note">Separate tags with commas</div>
+                </div>
+                <div class="form-group">
+                    <label for="groupDescription">Group Info / Rules</label>
+                    <textarea id="groupDescription" class="form-control" placeholder="Describe your group, its purpose, and any rules members should follow (max 1000 characters)"></textarea>
+                    <div class="form-note">Max 1000 characters</div>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Submit for Review
+                </button>
+            </form>
+            <div class="rules-section">
+                <h3>Rules for Publishers</h3>
+                <ul>
+                    <li>Only genuine WhatsApp group links are allowed.</li>
+                    <li>Spam or repeated links will be rejected.</li>
+                    <li>Group image, name & description should be appropriate.</li>
+                    <li>GroupAdda reserves the right to remove any group anytime.</li>
+                </ul>
+                <p class="form-note" style="margin-top: 1rem;">Your group will be visible publicly after admin approval.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#terms">Terms</a>
+            <a href="#privacy">Privacy</a>
+            <a href="#disclaimer">Disclaimer</a>
+            <a href="#contact">Contact</a>
+            <a href="admin.html">Admin Panel</a>
+        </div>
+        <p>&copy; 2023 GroupAdda. All rights reserved.</p>
+        <p>Find & Share WhatsApp Groups Worldwide — Instantly!</p>
+    </footer>
+
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://dbyomoccsnjsdlbqnfds.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRieW9tb2Njc25qc2RsYnFuZmRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NzM2MTcsImV4cCI6MjA3NjQ0OTYxN30.aR4SuLeR6DDkUNHLTr5EJeFAG9ChwortTTsTtuBbTFo';
+
+        // Sample Data (In a real app, this would come from Supabase)
+        const sampleGroups = [
+            {
+                id: 1,
+                name: "Tech Enthusiasts",
+                category: "Technology",
+                country: "India",
+                language: "English",
+                tags: "Programming, AI, Web Development",
+                description: "A group for tech enthusiasts to discuss the latest trends in technology, programming, and innovation.",
+                link: "https://chat.whatsapp.com/example1"
+            },
+            {
+                id: 2,
+                name: "Fitness Motivation",
+                category: "Health",
+                country: "USA",
+                language: "English",
+                tags: "Fitness, Workout, Health",
+                description: "Join us to stay motivated on your fitness journey. Share tips, progress, and support each other.",
+                link: "https://chat.whatsapp.com/example2"
+            },
+            {
+                id: 3,
+                name: "Business Network",
+                category: "Business",
+                country: "UK",
+                language: "English",
+                tags: "Business, Networking, Entrepreneurship",
+                description: "Connect with entrepreneurs and business professionals to share ideas and opportunities.",
+                link: "https://chat.whatsapp.com/example3"
+            },
+            {
+                id: 4,
+                name: "Movie Buffs",
+                category: "Entertainment",
+                country: "Canada",
+                language: "English",
+                tags: "Movies, Reviews, Discussions",
+                description: "A community for movie lovers to discuss films, share reviews, and recommend must-watch movies.",
+                link: "https://chat.whatsapp.com/example4"
+            },
+            {
+                id: 5,
+                name: "Language Exchange",
+                category: "Education",
+                country: "India",
+                language: "Hindi",
+                tags: "Languages, Learning, Culture",
+                description: "Practice and learn new languages with native speakers from around the world.",
+                link: "https://chat.whatsapp.com/example5"
+            },
+            {
+                id: 6,
+                name: "Startup Founders",
+                category: "Business",
+                country: "USA",
+                language: "English",
+                tags: "Startups, Funding, Mentorship",
+                description: "A network for startup founders to connect, share experiences, and find mentorship opportunities.",
+                link: "https://chat.whatsapp.com/example6"
+            }
+        ];
+
+        // DOM Elements
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const openAddGroupBtn = document.getElementById('openAddGroupBtn');
+        const openAddGroupModal = document.getElementById('openAddGroupModal');
+        const closeAddGroupModal = document.getElementById('closeAddGroupModal');
+        const addGroupModal = document.getElementById('addGroupModal');
+        const addGroupForm = document.getElementById('addGroupForm');
+        const groupsGrid = document.getElementById('groupsGrid');
+        const findGroupsBtn = document.getElementById('findGroupsBtn');
+        const toast = document.getElementById('toast');
+
+        // Event Listeners
+        hamburgerMenu.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('show');
+        });
+
+        openAddGroupBtn.addEventListener('click', () => {
+            addGroupModal.classList.add('show');
+        });
+
+        openAddGroupModal.addEventListener('click', () => {
+            addGroupModal.classList.add('show');
+            dropdownMenu.classList.remove('show');
+        });
+
+        closeAddGroupModal.addEventListener('click', () => {
+            addGroupModal.classList.remove('show');
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === addGroupModal) {
+                addGroupModal.classList.remove('show');
+            }
+        });
+
+        // Add Group Form Submission
+        addGroupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const groupLink = document.getElementById('groupLink').value;
+            const category = document.getElementById('groupCategory').value;
+            const country = document.getElementById('groupCountry').value;
+            const language = document.getElementById('groupLanguage').value;
+            const tags = document.getElementById('groupTags').value;
+            const description = document.getElementById('groupDescription').value;
+            
+            // In a real app, this would be sent to Supabase
+            console.log('Group submitted:', {
+                groupLink, category, country, language, tags, description
+            });
+            
+            addGroupModal.classList.remove('show');
+            showToast('Group submitted for admin approval!');
+            addGroupForm.reset();
+        });
+
+        // Find Groups Button
+        findGroupsBtn.addEventListener('click', () => {
+            const category = document.getElementById('categoryFilter').value;
+            const country = document.getElementById('countryFilter').value;
+            const language = document.getElementById('languageFilter').value;
+            
+            // In a real app, this would filter groups from Supabase
+            filterGroups(category, country, language);
+        });
+
+        // Functions
+        function displayGroups(groups) {
+            groupsGrid.innerHTML = '';
+            
+            groups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-avatar">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="group-info">
+                            <div class="group-name">${group.name}</div>
+                            <div class="group-meta">
+                                <span>${group.category}</span>
+                                <span>${group.country}</span>
+                                <span>${group.language}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body">
+                        <div class="group-description">${group.description}</div>
+                        <div class="group-actions">
+                            <button class="action-btn join-btn" onclick="joinGroup('${group.link}')">
+                                <i class="fab fa-whatsapp"></i> Join Group
+                            </button>
+                            <button class="action-btn share-btn" onclick="shareGroup('${group.link}')">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                groupsGrid.appendChild(groupCard);
+            });
+        }
+
+        function filterGroups(category, country, language) {
+            let filteredGroups = sampleGroups;
+            
+            if (category) {
+                filteredGroups = filteredGroups.filter(group => group.category === category);
+            }
+            
+            if (country) {
+                filteredGroups = filteredGroups.filter(group => group.country === country);
+            }
+            
+            if (language) {
+                filteredGroups = filteredGroups.filter(group => group.language === language);
+            }
+            
+            displayGroups(filteredGroups);
+            
+            if (filteredGroups.length === 0) {
+                groupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">No groups found matching your criteria.</p>';
+            }
+        }
+
+        function joinGroup(link) {
+            window.open(link, '_blank');
+        }
+
+        function shareGroup(link) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'WhatsApp Group',
+                    text: 'Check out this WhatsApp group!',
+                    url: link,
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast('Group link copied to clipboard!');
+                });
+            }
+        }
+
+        function showToast(message, isError = false) {
+            toast.textContent = message;
+            toast.style.backgroundColor = isError ? '#ff5252' : '#25D366';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            displayGroups(sampleGroups);
+        });
+    </script>
+</body>
+</html>
