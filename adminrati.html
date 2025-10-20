@@ -246,6 +246,12 @@
             border-radius: 10px;
             box-shadow: var(--shadow);
             overflow: hidden;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .group-card.removing {
+            transform: scale(0.9);
+            opacity: 0.5;
         }
 
         .group-header {
@@ -328,6 +334,12 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .approve-btn {
@@ -540,6 +552,10 @@
         const approvedGroupsGrid = document.getElementById('approvedGroupsGrid');
         const toast = document.getElementById('toast');
 
+        // Store group data for fast access
+        let pendingGroupsData = [];
+        let approvedGroupsData = [];
+
         // Check if user is already logged in
         document.addEventListener('DOMContentLoaded', () => {
             const isLoggedIn = localStorage.getItem('adminLoggedIn');
@@ -631,7 +647,8 @@
                     throw error;
                 }
                 
-                displayPendingGroups(groups || []);
+                pendingGroupsData = groups || [];
+                displayPendingGroups(pendingGroupsData);
             } catch (error) {
                 console.error('Error loading pending groups:', error);
                 pendingGroupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Error loading pending groups. Please try again later.</p>';
@@ -650,6 +667,7 @@
             groups.forEach(group => {
                 const groupCard = document.createElement('div');
                 groupCard.className = 'group-card';
+                groupCard.setAttribute('data-group-id', group.id);
                 
                 const groupName = group.group_name || "WhatsApp Group";
                 const avatarContent = group.group_image 
@@ -716,7 +734,8 @@
                     throw error;
                 }
                 
-                displayApprovedGroups(groups || []);
+                approvedGroupsData = groups || [];
+                displayApprovedGroups(approvedGroupsData);
             } catch (error) {
                 console.error('Error loading approved groups:', error);
                 approvedGroupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Error loading approved groups. Please try again later.</p>';
@@ -735,6 +754,7 @@
             groups.forEach(group => {
                 const groupCard = document.createElement('div');
                 groupCard.className = 'group-card';
+                groupCard.setAttribute('data-group-id', group.id);
                 
                 const groupName = group.group_name || "WhatsApp Group";
                 const avatarContent = group.group_image 
@@ -779,57 +799,78 @@
             });
         }
 
-        // Approve Group
+        // FAST APPROVE GROUP - Optimized version
         async function approveGroup(groupId) {
+            const groupCard = document.querySelector(`.group-card[data-group-id="${groupId}"]`);
+            if (!groupCard) return;
+            
+            // Get group data from stored array (no need to fetch from database)
+            const group = pendingGroupsData.find(g => g.id == groupId);
+            if (!group) return;
+            
+            // Disable buttons and show visual feedback
+            const buttons = groupCard.querySelectorAll('.action-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            groupCard.classList.add('removing');
+            
             try {
-                // Get the pending group
-                const { data: pendingGroup, error: fetchError } = await supabase
-                    .from('groups_pending')
-                    .select('*')
-                    .eq('id', groupId)
-                    .single();
+                // Use a single transaction-like operation
+                const approveData = {
+                    group_link: group.group_link,
+                    group_name: group.group_name,
+                    group_image: group.group_image,
+                    category: group.category,
+                    country: group.country,
+                    language: group.language,
+                    tags: group.tags,
+                    description: group.description,
+                    approved_at: new Date().toISOString()
+                };
                 
-                if (fetchError) {
-                    throw fetchError;
+                // Execute both operations in parallel for maximum speed
+                const [insertResult, deleteResult] = await Promise.all([
+                    supabase
+                        .from('groups_approved')
+                        .insert([approveData]),
+                    supabase
+                        .from('groups_pending')
+                        .delete()
+                        .eq('id', groupId)
+                ]);
+                
+                if (insertResult.error || deleteResult.error) {
+                    throw new Error(insertResult.error?.message || deleteResult.error?.message);
                 }
                 
-                // Insert into approved groups
-                const { data, error } = await supabase
-                    .from('groups_approved')
-                    .insert([
-                        {
-                            group_link: pendingGroup.group_link,
-                            group_name: pendingGroup.group_name,
-                            group_image: pendingGroup.group_image,
-                            category: pendingGroup.category,
-                            country: pendingGroup.country,
-                            language: pendingGroup.language,
-                            tags: pendingGroup.tags,
-                            description: pendingGroup.description,
-                            approved_at: new Date()
-                        }
-                    ]);
+                // Remove from UI immediately
+                groupCard.remove();
                 
-                if (error) {
-                    throw error;
-                }
-                
-                // Delete from pending groups
-                await supabase
-                    .from('groups_pending')
-                    .delete()
-                    .eq('id', groupId);
+                // Remove from data array
+                pendingGroupsData = pendingGroupsData.filter(g => g.id != groupId);
                 
                 showToast('Group approved successfully!');
-                loadPendingGroups();
+                
             } catch (error) {
                 console.error('Error approving group:', error);
+                
+                // Re-enable buttons and remove visual feedback
+                buttons.forEach(btn => btn.disabled = false);
+                groupCard.classList.remove('removing');
+                
                 showToast('Error approving group. Please try again.', true);
             }
         }
 
-        // Reject Group
+        // FAST REJECT GROUP
         async function rejectGroup(groupId) {
+            const groupCard = document.querySelector(`.group-card[data-group-id="${groupId}"]`);
+            if (!groupCard) return;
+            
+            // Disable buttons and show visual feedback
+            const buttons = groupCard.querySelectorAll('.action-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            groupCard.classList.add('removing');
+            
             try {
                 const { error } = await supabase
                     .from('groups_pending')
@@ -840,33 +881,63 @@
                     throw error;
                 }
                 
+                // Remove from UI immediately
+                groupCard.remove();
+                
+                // Remove from data array
+                pendingGroupsData = pendingGroupsData.filter(g => g.id != groupId);
+                
                 showToast('Group rejected successfully!');
-                loadPendingGroups();
             } catch (error) {
                 console.error('Error rejecting group:', error);
+                
+                // Re-enable buttons and remove visual feedback
+                buttons.forEach(btn => btn.disabled = false);
+                groupCard.classList.remove('removing');
+                
                 showToast('Error rejecting group. Please try again.', true);
             }
         }
 
-        // Delete Group
+        // FAST DELETE GROUP
         async function deleteGroup(groupId) {
-            if (confirm('Are you sure you want to delete this group?')) {
-                try {
-                    const { error } = await supabase
-                        .from('groups_approved')
-                        .delete()
-                        .eq('id', groupId);
-                    
-                    if (error) {
-                        throw error;
-                    }
-                    
-                    showToast('Group deleted successfully!');
-                    loadApprovedGroups();
-                } catch (error) {
-                    console.error('Error deleting group:', error);
-                    showToast('Error deleting group. Please try again.', true);
+            if (!confirm('Are you sure you want to delete this group?')) {
+                return;
+            }
+            
+            const groupCard = document.querySelector(`.group-card[data-group-id="${groupId}"]`);
+            if (!groupCard) return;
+            
+            // Disable button and show visual feedback
+            const button = groupCard.querySelector('.delete-btn');
+            button.disabled = true;
+            groupCard.classList.add('removing');
+            
+            try {
+                const { error } = await supabase
+                    .from('groups_approved')
+                    .delete()
+                    .eq('id', groupId);
+                
+                if (error) {
+                    throw error;
                 }
+                
+                // Remove from UI immediately
+                groupCard.remove();
+                
+                // Remove from data array
+                approvedGroupsData = approvedGroupsData.filter(g => g.id != groupId);
+                
+                showToast('Group deleted successfully!');
+            } catch (error) {
+                console.error('Error deleting group:', error);
+                
+                // Re-enable button and remove visual feedback
+                button.disabled = false;
+                groupCard.classList.remove('removing');
+                
+                showToast('Error deleting group. Please try again.', true);
             }
         }
 
