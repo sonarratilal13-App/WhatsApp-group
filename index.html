@@ -300,6 +300,22 @@
             margin-bottom: 5px;
         }
 
+        .upload-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .upload-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
         .rules-section {
             background-color: var(--light-gray);
             padding: 1.5rem;
@@ -695,17 +711,27 @@
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="groupName">Group Name *</label>
-                    <input type="text" id="groupName" class="form-control" required placeholder="Group name will be auto-filled">
-                </div>
-                
-                <div class="form-group">
-                    <label for="groupImage">Group Image URL</label>
-                    <input type="url" id="groupImage" class="form-control" placeholder="Image URL will be auto-filled">
-                    <div class="form-note">Group image will be automatically detected from WhatsApp</div>
+                    <!-- Manual Upload Section -->
+                    <div class="upload-section">
+                        <h5>Manual Upload (Optional)</h5>
+                        <div class="form-group">
+                            <label for="groupName">Group Name *</label>
+                            <input type="text" id="groupName" class="form-control" required placeholder="Enter group name manually">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="groupImage">Group Image URL</label>
+                            <input type="url" id="groupImage" class="form-control" placeholder="https://example.com/group-image.jpg">
+                            <div class="form-note">Or upload image manually</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="imageUpload">Upload Group Image</label>
+                            <input type="file" id="imageUpload" class="form-control" accept="image/*">
+                            <div class="form-note">Select group image from your device</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -820,6 +846,7 @@
         const previewIcon = document.getElementById('previewIcon');
         const groupNameInput = document.getElementById('groupName');
         const groupImageInput = document.getElementById('groupImage');
+        const imageUploadInput = document.getElementById('imageUpload');
 
         // Event Listeners
         hamburgerMenu.addEventListener('click', () => {
@@ -868,6 +895,38 @@
             const link = groupLinkInput.value.trim();
             if (link && isValidWhatsAppLink(link)) {
                 fetchWhatsAppGroupInfo(link);
+            }
+        });
+
+        // Image upload handler
+        imageUploadInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    previewIcon.style.display = 'none';
+                    groupImageInput.value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Manual name input sync with preview
+        groupNameInput.addEventListener('input', function() {
+            previewName.textContent = this.value || 'Group name will appear here';
+        });
+
+        // Manual image URL input sync with preview
+        groupImageInput.addEventListener('input', function() {
+            if (this.value) {
+                previewImage.src = this.value;
+                previewImage.style.display = 'block';
+                previewIcon.style.display = 'none';
+            } else {
+                previewImage.style.display = 'none';
+                previewIcon.style.display = 'flex';
             }
         });
 
@@ -978,46 +1037,62 @@
         }
 
         function simulateWhatsAppGroupInfo(link) {
-            // Simulate different group types based on link patterns
-            const groupTypes = [
+            // Smart group detection based on common patterns
+            const groupPatterns = [
                 {
-                    pattern: /programming|code|tech|developer/i,
-                    name: "Programming & Developers",
+                    keywords: ['programming', 'code', 'tech', 'developer', 'coding', 'software'],
+                    name: "Programming & Developers Group",
                     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face"
                 },
                 {
-                    pattern: /music|song|bollywood|film/i,
-                    name: "Music Lovers",
+                    keywords: ['music', 'song', 'bollywood', 'film', 'singer', 'guitar'],
+                    name: "Music Lovers Community",
                     image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=150&h=150&fit=crop&crop=face"
                 },
                 {
-                    pattern: /business|startup|entrepreneur/i,
-                    name: "Business Network",
+                    keywords: ['business', 'startup', 'entrepreneur', 'finance', 'money', 'invest'],
+                    name: "Business Network Group",
                     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=150&h=150&fit=crop&crop=face"
                 },
                 {
-                    pattern: /fitness|gym|workout|health/i,
-                    name: "Fitness & Health",
+                    keywords: ['fitness', 'gym', 'workout', 'health', 'exercise', 'yoga'],
+                    name: "Fitness & Health Community",
                     image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face"
                 },
                 {
-                    pattern: /movie|film|cinema|bollywood/i,
-                    name: "Movie Buffs",
+                    keywords: ['movie', 'film', 'cinema', 'bollywood', 'hollywood', 'netflix'],
+                    name: "Movie Buffs Club",
                     image: "https://images.unsplash.com/photo-1489599809505-7c8e1a8a6b0c?w=150&h=150&fit=crop&crop=face"
                 },
                 {
-                    pattern: /study|education|learning|students/i,
-                    name: "Study Group",
+                    keywords: ['study', 'education', 'learning', 'students', 'college', 'school'],
+                    name: "Study & Education Group",
                     image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=face"
+                },
+                {
+                    keywords: ['cooking', 'food', 'recipe', 'chef', 'kitchen', 'baking'],
+                    name: "Cooking & Recipes Group",
+                    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=150&h=150&fit=crop&crop=face"
+                },
+                {
+                    keywords: ['travel', 'tour', 'adventure', 'explore', 'vacation'],
+                    name: "Travel Enthusiasts",
+                    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=150&h=150&fit=crop&crop=face"
                 }
             ];
 
-            // Find matching group type
-            const matchedType = groupTypes.find(type => type.pattern.test(link)) || groupTypes[0];
+            // Find matching group pattern
+            let matchedPattern = groupPatterns[0]; // Default
+            for (let pattern of groupPatterns) {
+                if (pattern.keywords.some(keyword => link.toLowerCase().includes(keyword))) {
+                    matchedPattern = pattern;
+                    break;
+                }
+            }
 
             return {
-                name: matchedType.name,
-                image: matchedType.image
+                name: matchedPattern.name,
+                image: matchedPattern.image
             };
         }
 
@@ -1044,6 +1119,7 @@
             previewIcon.style.display = 'flex';
             groupNameInput.value = '';
             groupImageInput.value = '';
+            imageUploadInput.value = '';
         }
 
         function resetAutoFetch() {
