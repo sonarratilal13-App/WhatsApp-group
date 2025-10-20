@@ -1195,10 +1195,10 @@
                 const groupCard = document.createElement('div');
                 groupCard.className = 'group-card';
                 
-                // Use group name from database or default
-                const groupName = group.group_name || "WhatsApp Group";
+                // Use ACTUAL group name from database, not placeholder
+                const groupName = group.group_name || extractGroupNameFromLink(group.group_link) || "WhatsApp Group";
                 
-                // Use group image if available, otherwise use WhatsApp icon
+                // Use ACTUAL group image if available, otherwise use WhatsApp icon
                 const avatarContent = group.group_image 
                     ? `<img src="${group.group_image}" alt="${groupName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
                     : '';
@@ -1210,6 +1210,7 @@
                             <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
                         </div>
                         <div class="group-info">
+                            <!-- ACTUAL GROUP NAME HERE -->
                             <div class="group-name">${groupName}</div>
                             <div class="group-meta">
                                 <span>${group.category}</span>
@@ -1219,6 +1220,7 @@
                         </div>
                     </div>
                     <div class="group-body">
+                        <!-- ACTUAL GROUP DESCRIPTION HERE -->
                         <div class="group-description">${group.description || 'Join this WhatsApp group to connect with like-minded people.'}</div>
                         <div class="group-actions">
                             <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
@@ -1284,6 +1286,7 @@
                             <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
                         </div>
                         <div class="group-info">
+                            <!-- ACTUAL GROUP NAME HERE -->
                             <div class="group-name">${group.group_name}</div>
                             <div class="group-meta">
                                 <span>${group.category}</span>
@@ -1293,6 +1296,7 @@
                         </div>
                     </div>
                     <div class="group-body">
+                        <!-- ACTUAL GROUP DESCRIPTION HERE -->
                         <div class="group-description">${group.description}</div>
                         <div class="group-actions">
                             <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
