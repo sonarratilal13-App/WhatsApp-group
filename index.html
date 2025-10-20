@@ -589,7 +589,7 @@
                     <a href="#privacy">Privacy</a>
                     <a href="#disclaimer">Disclaimer</a>
                     <a href="#contact">Contact</a>
-                    <a href="admin.html" id="adminLink">Admin Panel</a>
+                    <a href="admin.html">Admin Panel</a>
                 </div>
             </div>
         </div>
@@ -950,10 +950,6 @@
         });
 
         // Functions
-        function isValidWhatsAppLink(link) {
-            return link.includes('chat.whatsapp.com');
-        }
-
         function resetForm() {
             previewName.textContent = 'Enter group details below';
             previewImage.style.display = 'none';
@@ -1063,6 +1059,33 @@
                     language: "English",
                     description: "Discuss your favorite movies, share reviews, and get recommendations.",
                     group_link: "https://chat.whatsapp.com/sample3"
+                },
+                {
+                    group_name: "Business Network India",
+                    group_image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=150&h=150&fit=crop&crop=face",
+                    category: "Business",
+                    country: "India",
+                    language: "Hindi",
+                    description: "Connect with business professionals and entrepreneurs across India.",
+                    group_link: "https://chat.whatsapp.com/sample4"
+                },
+                {
+                    group_name: "Study Group UK",
+                    group_image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=face",
+                    category: "Education",
+                    country: "UK",
+                    language: "English",
+                    description: "Academic support and study resources for students in the UK.",
+                    group_link: "https://chat.whatsapp.com/sample5"
+                },
+                {
+                    group_name: "Job Opportunities USA",
+                    group_image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=150&fit=crop&crop=face",
+                    category: "Jobs",
+                    country: "USA",
+                    language: "English",
+                    description: "Find job opportunities and career advice in the United States.",
+                    group_link: "https://chat.whatsapp.com/sample6"
                 }
             ];
             
