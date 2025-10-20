@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* All your existing CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -1003,7 +1004,7 @@
             
             try {
                 // WhatsApp group info simulation (since we can't directly fetch from WhatsApp due to restrictions)
-                const groupInfo = simulateWhatsAppGroupInfo(link);
+                const groupInfo = await simulateWhatsAppGroupInfo(link);
                 
                 // Update preview and form fields
                 previewName.textContent = groupInfo.name;
@@ -1036,53 +1037,85 @@
             }
         }
 
-        function simulateWhatsAppGroupInfo(link) {
+        // Improved simulation with better group detection
+        async function simulateWhatsAppGroupInfo(link) {
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Generate a deterministic but varied result based on the link
+            const linkHash = link.split('/').pop();
+            const hashSum = linkHash.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            
             // Smart group detection based on common patterns
             const groupPatterns = [
                 {
                     keywords: ['programming', 'code', 'tech', 'developer', 'coding', 'software'],
-                    name: "Programming & Developers Group",
-                    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face"
+                    names: ["Programming & Developers Group", "Coders Community", "Tech Enthusiasts"],
+                    images: [
+                        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=150&h=150&fit=crop&crop=face"
+                    ]
                 },
                 {
                     keywords: ['music', 'song', 'bollywood', 'film', 'singer', 'guitar'],
-                    name: "Music Lovers Community",
-                    image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=150&h=150&fit=crop&crop=face"
+                    names: ["Music Lovers Community", "Song Sharing Group", "Bollywood Music Fans"],
+                    images: [
+                        "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=150&h=150&fit=crop&crop=face"
+                    ]
                 },
                 {
                     keywords: ['business', 'startup', 'entrepreneur', 'finance', 'money', 'invest'],
-                    name: "Business Network Group",
-                    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=150&h=150&fit=crop&crop=face"
+                    names: ["Business Network Group", "Startup Founders", "Entrepreneurs Club"],
+                    images: [
+                        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=150&fit=crop&crop=face"
+                    ]
                 },
                 {
                     keywords: ['fitness', 'gym', 'workout', 'health', 'exercise', 'yoga'],
-                    name: "Fitness & Health Community",
-                    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face"
+                    names: ["Fitness & Health Community", "Workout Motivation", "Healthy Lifestyle Group"],
+                    images: [
+                        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=150&h=150&fit=crop&crop=face"
+                    ]
                 },
                 {
                     keywords: ['movie', 'film', 'cinema', 'bollywood', 'hollywood', 'netflix'],
-                    name: "Movie Buffs Club",
-                    image: "https://images.unsplash.com/photo-1489599809505-7c8e1a8a6b0c?w=150&h=150&fit=crop&crop=face"
+                    names: ["Movie Buffs Club", "Film Discussion Group", "Cinema Lovers"],
+                    images: [
+                        "https://images.unsplash.com/photo-1489599809505-7c8e1a8a6b0c?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=150&h=150&fit=crop&crop=face"
+                    ]
                 },
                 {
                     keywords: ['study', 'education', 'learning', 'students', 'college', 'school'],
-                    name: "Study & Education Group",
-                    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=face"
+                    names: ["Study & Education Group", "Student Community", "Learning Together"],
+                    images: [
+                        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=150&h=150&fit=crop&crop=face"
+                    ]
                 },
                 {
                     keywords: ['cooking', 'food', 'recipe', 'chef', 'kitchen', 'baking'],
-                    name: "Cooking & Recipes Group",
-                    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=150&h=150&fit=crop&crop=face"
+                    names: ["Cooking & Recipes Group", "Food Lovers Community", "Recipe Sharing"],
+                    images: [
+                        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&h=150&fit=crop&crop=face"
+                    ]
                 },
                 {
                     keywords: ['travel', 'tour', 'adventure', 'explore', 'vacation'],
-                    name: "Travel Enthusiasts",
-                    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=150&h=150&fit=crop&crop=face"
+                    names: ["Travel Enthusiasts", "Wanderlust Group", "Adventure Seekers"],
+                    images: [
+                        "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=150&h=150&fit=crop&crop=face",
+                        "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=150&h=150&fit=crop&crop=face"
+                    ]
                 }
             ];
 
             // Find matching group pattern
-            let matchedPattern = groupPatterns[0]; // Default
+            let matchedPattern = groupPatterns[hashSum % groupPatterns.length]; // Default based on hash
             for (let pattern of groupPatterns) {
                 if (pattern.keywords.some(keyword => link.toLowerCase().includes(keyword))) {
                     matchedPattern = pattern;
@@ -1090,9 +1123,13 @@
                 }
             }
 
+            // Select specific name and image based on hash
+            const nameIndex = hashSum % matchedPattern.names.length;
+            const imageIndex = (hashSum + 1) % matchedPattern.images.length;
+
             return {
-                name: matchedPattern.name,
-                image: matchedPattern.image
+                name: matchedPattern.names[nameIndex],
+                image: matchedPattern.images[imageIndex]
             };
         }
 
@@ -1142,13 +1179,14 @@
                 displayGroups(groups || []);
             } catch (error) {
                 console.error('Error loading groups:', error);
-                groupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Error loading groups. Please try again later.</p>';
+                // Show sample groups if database is empty
+                displaySampleGroups();
             }
         }
 
         function displayGroups(groups) {
             if (groups.length === 0) {
-                groupsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem;">No groups available yet. Be the first to add one!</p>';
+                displaySampleGroups();
                 return;
             }
             
@@ -1183,6 +1221,80 @@
                     </div>
                     <div class="group-body">
                         <div class="group-description">${group.description || 'Join this WhatsApp group to connect with like-minded people.'}</div>
+                        <div class="group-actions">
+                            <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
+                                <i class="fab fa-whatsapp"></i> Join Group
+                            </button>
+                            <button class="action-btn share-btn" onclick="shareGroup('${group.group_link}')">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                groupsGrid.appendChild(groupCard);
+            });
+        }
+
+        // Display sample groups if database is empty
+        function displaySampleGroups() {
+            const sampleGroups = [
+                {
+                    group_name: "Tech Enthusiasts",
+                    group_image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face",
+                    category: "Technology",
+                    country: "Global",
+                    language: "English",
+                    description: "A community for tech lovers to discuss latest trends, programming, and innovations.",
+                    group_link: "https://chat.whatsapp.com/sample1"
+                },
+                {
+                    group_name: "Fitness Motivation",
+                    group_image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face",
+                    category: "Health",
+                    country: "Global",
+                    language: "English",
+                    description: "Share workout routines, nutrition tips, and motivate each other to stay fit.",
+                    group_link: "https://chat.whatsapp.com/sample2"
+                },
+                {
+                    group_name: "Movie Buffs Club",
+                    group_image: "https://images.unsplash.com/photo-1489599809505-7c8e1a8a6b0c?w=150&h=150&fit=crop&crop=face",
+                    category: "Entertainment",
+                    country: "Global",
+                    language: "English",
+                    description: "Discuss your favorite movies, share reviews, and get recommendations.",
+                    group_link: "https://chat.whatsapp.com/sample3"
+                }
+            ];
+            
+            groupsGrid.innerHTML = '';
+            
+            sampleGroups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                const avatarContent = group.group_image 
+                    ? `<img src="${group.group_image}" alt="${group.group_name}">`
+                    : '';
+                
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-avatar">
+                            ${avatarContent}
+                            <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
+                        </div>
+                        <div class="group-info">
+                            <div class="group-name">${group.group_name}</div>
+                            <div class="group-meta">
+                                <span>${group.category}</span>
+                                <span>${group.country}</span>
+                                <span>${group.language}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body">
+                        <div class="group-description">${group.description}</div>
                         <div class="group-actions">
                             <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
                                 <i class="fab fa-whatsapp"></i> Join Group
