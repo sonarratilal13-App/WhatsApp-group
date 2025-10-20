@@ -905,7 +905,7 @@
             submitGroupBtn.innerHTML = '<div class="loading"></div> Submitting...';
             
             try {
-                // Insert into Supabase
+                // Insert into existing groups_pending table
                 const { data, error } = await supabase
                     .from('groups_pending')
                     .insert([
@@ -958,7 +958,7 @@
 
         async function loadGroups() {
             try {
-                // Fetch approved groups from Supabase
+                // Fetch approved groups from existing table
                 const { data: groups, error } = await supabase
                     .from('groups_approved')
                     .select('*')
@@ -1077,15 +1077,6 @@
                     language: "English",
                     description: "Academic support and study resources for students in the UK.",
                     group_link: "https://chat.whatsapp.com/sample5"
-                },
-                {
-                    group_name: "Job Opportunities USA",
-                    group_image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=150&fit=crop&crop=face",
-                    category: "Jobs",
-                    country: "USA",
-                    language: "English",
-                    description: "Find job opportunities and career advice in the United States.",
-                    group_link: "https://chat.whatsapp.com/sample6"
                 }
             ];
             
