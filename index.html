@@ -123,6 +123,7 @@
             transform: translateY(-50%);
             color: var(--whatsapp-green);
             font-size: 1.2rem;
+            cursor: pointer;
         }
 
         /* Main Content */
@@ -250,6 +251,17 @@
             font-size: 0.9rem;
             color: #777;
             margin-top: 0.5rem;
+        }
+
+        .word-count {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .word-count.warning {
+            color: #ff6b6b;
         }
 
         /* Manual Upload Section */
@@ -422,11 +434,46 @@
         .group-description {
             margin-bottom: 1rem;
             font-size: 0.95rem;
+            line-height: 1.4;
+            max-height: 80px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .group-description.expanded {
+            max-height: none;
+        }
+
+        .group-description::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(transparent, white);
+            pointer-events: none;
+        }
+
+        .group-description.expanded::after {
+            display: none;
+        }
+
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: var(--whatsapp-green);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+            margin-top: 5px;
+            display: block;
         }
 
         .group-actions {
             display: flex;
             justify-content: space-between;
+            margin-top: 1rem;
         }
 
         .action-btn {
@@ -595,8 +642,8 @@
         </div>
         <div class="search-section">
             <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search WhatsApp Groups...">
-                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search WhatsApp Groups by name, category, or description...">
+                <i class="fas fa-search search-icon" id="searchIcon"></i>
             </div>
         </div>
     </header>
@@ -761,8 +808,9 @@
                 </div>
                 <div class="form-group">
                     <label for="groupDescription">Group Info / Rules</label>
-                    <textarea id="groupDescription" class="form-control" placeholder="Describe your group, its purpose, and any rules members should follow (max 1000 characters)"></textarea>
-                    <div class="form-note">Max 1000 characters</div>
+                    <textarea id="groupDescription" class="form-control" placeholder="Describe your group, its purpose, and any rules members should follow (max 100 words)" maxlength="500"></textarea>
+                    <div class="word-count" id="wordCount">0/100 words</div>
+                    <div class="form-note">Max 100 words (approximately 500 characters)</div>
                 </div>
                 <button type="submit" class="btn" id="submitGroupBtn" style="width: 100%;">
                     <i class="fas fa-paper-plane"></i> Submit for Review
@@ -817,6 +865,8 @@
         const submitGroupBtn = document.getElementById('submitGroupBtn');
         const groupsGrid = document.getElementById('groupsGrid');
         const findGroupsBtn = document.getElementById('findGroupsBtn');
+        const searchInput = document.getElementById('searchInput');
+        const searchIcon = document.getElementById('searchIcon');
         const toast = document.getElementById('toast');
         
         // Manual upload elements
@@ -827,6 +877,8 @@
         const groupNameInput = document.getElementById('groupName');
         const groupImageInput = document.getElementById('groupImage');
         const imageUploadInput = document.getElementById('imageUpload');
+        const groupDescription = document.getElementById('groupDescription');
+        const wordCount = document.getElementById('wordCount');
 
         // Event Listeners
         hamburgerMenu.addEventListener('click', () => {
@@ -887,6 +939,45 @@
             }
         });
 
+        // Word count for description
+        groupDescription.addEventListener('input', function() {
+            const text = this.value.trim();
+            const words = text ? text.split(/\s+/).filter(word => word.length > 0) : [];
+            const wordCountValue = words.length;
+            
+            wordCount.textContent = `${wordCountValue}/100 words`;
+            
+            if (wordCountValue > 100) {
+                wordCount.classList.add('warning');
+                // Truncate to 100 words
+                const truncatedText = words.slice(0, 100).join(' ');
+                this.value = truncatedText;
+                wordCount.textContent = `100/100 words (truncated)`;
+            } else {
+                wordCount.classList.remove('warning');
+            }
+        });
+
+        // Search functionality
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        searchIcon.addEventListener('click', function() {
+            performSearch();
+        });
+
+        // Find Groups Button
+        findGroupsBtn.addEventListener('click', () => {
+            const category = document.getElementById('categoryFilter').value;
+            const country = document.getElementById('countryFilter').value;
+            const language = document.getElementById('languageFilter').value;
+            
+            filterGroups(category, country, language);
+        });
+
         // Add Group Form Submission
         addGroupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -899,6 +990,13 @@
             const language = document.getElementById('groupLanguage').value;
             const tags = document.getElementById('groupTags').value;
             const description = document.getElementById('groupDescription').value;
+            
+            // Validate word count
+            const wordCountValue = description.trim() ? description.trim().split(/\s+/).filter(word => word.length > 0).length : 0;
+            if (wordCountValue > 100) {
+                showToast('Description cannot exceed 100 words', true);
+                return;
+            }
             
             // Show loading state
             submitGroupBtn.disabled = true;
@@ -940,20 +1038,43 @@
             }
         });
 
-        // Find Groups Button
-        findGroupsBtn.addEventListener('click', () => {
-            const category = document.getElementById('categoryFilter').value;
-            const country = document.getElementById('countryFilter').value;
-            const language = document.getElementById('languageFilter').value;
-            
-            filterGroups(category, country, language);
-        });
-
         // Functions
         function resetForm() {
             previewName.textContent = 'Enter group details below';
             previewImage.style.display = 'none';
             previewIcon.style.display = 'flex';
+            wordCount.textContent = '0/100 words';
+            wordCount.classList.remove('warning');
+        }
+
+        // Search function
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm) {
+                filterGroupsBySearch(searchTerm);
+            } else {
+                loadGroups();
+            }
+        }
+
+        async function filterGroupsBySearch(searchTerm) {
+            try {
+                const { data: groups, error } = await supabase
+                    .from('groups_approved')
+                    .select('*')
+                    .or(`group_name.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,tags.ilike.%${searchTerm}%`)
+                    .order('approved_at', { ascending: false });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                displayGroups(groups || []);
+                showToast(`Found ${groups?.length || 0} groups matching "${searchTerm}"`);
+            } catch (error) {
+                console.error('Error searching groups:', error);
+                showToast('Error searching groups. Please try again.', true);
+            }
         }
 
         async function loadGroups() {
@@ -996,6 +1117,12 @@
                     ? `<img src="${group.group_image}" alt="${groupName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
                     : '';
                 
+                // Truncate description for display
+                const description = group.description || 'Join this WhatsApp group to connect with like-minded people.';
+                const words = description.split(' ');
+                const shortDescription = words.length > 20 ? words.slice(0, 20).join(' ') + '...' : description;
+                const needsReadMore = words.length > 20;
+                
                 groupCard.innerHTML = `
                     <div class="group-header">
                         <div class="group-avatar">
@@ -1014,7 +1141,14 @@
                     </div>
                     <div class="group-body">
                         <!-- ACTUAL GROUP DESCRIPTION HERE -->
-                        <div class="group-description">${group.description || 'Join this WhatsApp group to connect with like-minded people.'}</div>
+                        <div class="group-description" id="desc-${group.id}">
+                            ${shortDescription}
+                        </div>
+                        ${needsReadMore ? `
+                            <button class="read-more-btn" onclick="toggleDescription(${group.id}, '${description.replace(/'/g, "\\'")}')">
+                                Read More
+                            </button>
+                        ` : ''}
                         <div class="group-actions">
                             <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
                                 <i class="fab fa-whatsapp"></i> Join Group
@@ -1030,53 +1164,58 @@
             });
         }
 
+        // Toggle description expand/collapse
+        window.toggleDescription = function(groupId, fullDescription) {
+            const descElement = document.getElementById(`desc-${groupId}`);
+            const btnElement = descElement.nextElementSibling;
+            
+            if (descElement.classList.contains('expanded')) {
+                // Collapse
+                const words = fullDescription.split(' ');
+                const shortDescription = words.length > 20 ? words.slice(0, 20).join(' ') + '...' : fullDescription;
+                descElement.innerHTML = shortDescription;
+                descElement.classList.remove('expanded');
+                btnElement.textContent = 'Read More';
+            } else {
+                // Expand
+                descElement.innerHTML = fullDescription;
+                descElement.classList.add('expanded');
+                btnElement.textContent = 'Read Less';
+            }
+        };
+
         // Display sample groups if database is empty
         function displaySampleGroups() {
             const sampleGroups = [
                 {
+                    id: 1,
                     group_name: "Tech Enthusiasts",
                     group_image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face",
                     category: "Technology",
                     country: "Global",
                     language: "English",
-                    description: "A community for tech lovers to discuss latest trends, programming, and innovations.",
+                    description: "Join our community of tech lovers to discuss latest trends, programming, and innovations. Share knowledge and grow together in this amazing community of developers and tech enthusiasts from around the world.",
                     group_link: "https://chat.whatsapp.com/sample1"
                 },
                 {
+                    id: 2,
                     group_name: "Fitness Motivation",
                     group_image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face",
                     category: "Health",
                     country: "Global",
                     language: "English",
-                    description: "Share workout routines, nutrition tips, and motivate each other to stay fit.",
+                    description: "Get fit together! Share workout routines, nutrition tips, and motivate each other to stay healthy and active. Perfect for beginners and fitness experts alike.",
                     group_link: "https://chat.whatsapp.com/sample2"
                 },
                 {
+                    id: 3,
                     group_name: "Movie Buffs Club",
                     group_image: "https://images.unsplash.com/photo-1489599809505-7c8e1a8a6b0c?w=150&h=150&fit=crop&crop=face",
                     category: "Entertainment",
                     country: "Global",
                     language: "English",
-                    description: "Discuss your favorite movies, share reviews, and get recommendations.",
+                    description: "Discuss your favorite movies, share reviews, get recommendations and talk about latest releases in cinema. Join our film community today!",
                     group_link: "https://chat.whatsapp.com/sample3"
-                },
-                {
-                    group_name: "Business Network India",
-                    group_image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=150&h=150&fit=crop&crop=face",
-                    category: "Business",
-                    country: "India",
-                    language: "Hindi",
-                    description: "Connect with business professionals and entrepreneurs across India.",
-                    group_link: "https://chat.whatsapp.com/sample4"
-                },
-                {
-                    group_name: "Study Group UK",
-                    group_image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=face",
-                    category: "Education",
-                    country: "UK",
-                    language: "English",
-                    description: "Academic support and study resources for students in the UK.",
-                    group_link: "https://chat.whatsapp.com/sample5"
                 }
             ];
             
@@ -1090,6 +1229,11 @@
                     ? `<img src="${group.group_image}" alt="${group.group_name}">`
                     : '';
                 
+                // Truncate description for display
+                const words = group.description.split(' ');
+                const shortDescription = words.length > 20 ? words.slice(0, 20).join(' ') + '...' : group.description;
+                const needsReadMore = words.length > 20;
+                
                 groupCard.innerHTML = `
                     <div class="group-header">
                         <div class="group-avatar">
@@ -1097,7 +1241,6 @@
                             <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
                         </div>
                         <div class="group-info">
-                            <!-- ACTUAL GROUP NAME HERE -->
                             <div class="group-name">${group.group_name}</div>
                             <div class="group-meta">
                                 <span>${group.category}</span>
@@ -1107,8 +1250,14 @@
                         </div>
                     </div>
                     <div class="group-body">
-                        <!-- ACTUAL GROUP DESCRIPTION HERE -->
-                        <div class="group-description">${group.description}</div>
+                        <div class="group-description" id="desc-${group.id}">
+                            ${shortDescription}
+                        </div>
+                        ${needsReadMore ? `
+                            <button class="read-more-btn" onclick="toggleDescription(${group.id}, '${group.description.replace(/'/g, "\\'")}')">
+                                Read More
+                            </button>
+                        ` : ''}
                         <div class="group-actions">
                             <button class="action-btn join-btn" onclick="joinGroup('${group.group_link}')">
                                 <i class="fab fa-whatsapp"></i> Join Group
