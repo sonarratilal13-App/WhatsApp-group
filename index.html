@@ -1139,7 +1139,7 @@
                                 ${needsReadMore ? shortDescription : description}
                             </div>
                             ${needsReadMore ? `
-                                <button class="read-more-btn" onclick="toggleReadMore(${group.id}, '${description.replace(/'/g, "\\'")}')">
+                                <button class="read-more-btn" onclick="toggleReadMore(${group.id})" id="btn-${group.id}">
                                     Read More
                                 </button>
                             ` : ''}
@@ -1155,14 +1155,20 @@
                     </div>
                 `;
                 
+                // Store the full description in a data attribute
+                if (needsReadMore) {
+                    groupCard.querySelector(`#desc-${group.id}`).setAttribute('data-full-description', description);
+                }
+                
                 groupsGrid.appendChild(groupCard);
             });
         }
 
-        // Toggle Read More functionality
-        window.toggleReadMore = function(groupId, fullDescription) {
+        // Toggle Read More functionality - FIXED VERSION
+        window.toggleReadMore = function(groupId) {
             const descElement = document.getElementById(`desc-${groupId}`);
-            const btnElement = descElement.nextElementSibling;
+            const btnElement = document.getElementById(`btn-${groupId}`);
+            const fullDescription = descElement.getAttribute('data-full-description');
             
             if (descElement.classList.contains('short')) {
                 // Expand to show full description
@@ -1188,7 +1194,7 @@
                     category: "Technology",
                     country: "India",
                     language: "English",
-                    description: "Join our community of tech lovers to discuss latest trends, programming, and innovations. Share knowledge and grow together in this amazing community of developers and tech enthusiasts from around the world. We discuss everything from web development to artificial intelligence and machine learning.",
+                    description: "Join our community of tech lovers to discuss latest trends, programming, and innovations. Share knowledge and grow together in this amazing community of developers and tech enthusiasts from around the world. We discuss everything from web development to artificial intelligence and machine learning. Daily coding challenges, project collaborations, and tech news discussions make this group the perfect place for any tech enthusiast.",
                     group_link: "https://chat.whatsapp.com/sample1"
                 },
                 {
@@ -1198,7 +1204,7 @@
                     category: "Health",
                     country: "Global",
                     language: "English",
-                    description: "Get fit together! Share workout routines, nutrition tips, and motivate each other to stay healthy and active. Perfect for beginners and fitness experts alike. We share daily workout challenges, healthy recipes, and support each other's fitness journeys.",
+                    description: "Get fit together! Share workout routines, nutrition tips, and motivate each other to stay healthy and active. Perfect for beginners and fitness experts alike. We share daily workout challenges, healthy recipes, and support each other's fitness journeys. Whether you're into weight training, yoga, cardio, or just starting your fitness journey, this group provides the perfect environment to stay motivated and achieve your health goals.",
                     group_link: "https://chat.whatsapp.com/sample2"
                 },
                 {
@@ -1208,7 +1214,7 @@
                     category: "Entertainment",
                     country: "Global",
                     language: "English",
-                    description: "Discuss your favorite movies, share reviews, get recommendations and talk about latest releases in cinema. Join our film community today! We have weekly movie discussions, spoiler-free reviews, and recommendations for all genres.",
+                    description: "Discuss your favorite movies, share reviews, get recommendations and talk about latest releases in cinema. Join our film community today! We have weekly movie discussions, spoiler-free reviews, and recommendations for all genres. From Hollywood blockbusters to indie films and international cinema, our members share diverse perspectives and help you discover hidden cinematic gems you might have missed.",
                     group_link: "https://chat.whatsapp.com/sample3"
                 }
             ];
@@ -1251,7 +1257,7 @@
                                 ${needsReadMore ? shortDescription : description}
                             </div>
                             ${needsReadMore ? `
-                                <button class="read-more-btn" onclick="toggleReadMore(${group.id}, '${description.replace(/'/g, "\\'")}')">
+                                <button class="read-more-btn" onclick="toggleReadMore(${group.id})" id="btn-${group.id}">
                                     Read More
                                 </button>
                             ` : ''}
@@ -1266,6 +1272,11 @@
                         </div>
                     </div>
                 `;
+                
+                // Store the full description in a data attribute
+                if (needsReadMore) {
+                    groupCard.querySelector(`#desc-${group.id}`).setAttribute('data-full-description', description);
+                }
                 
                 groupsGrid.appendChild(groupCard);
             });
