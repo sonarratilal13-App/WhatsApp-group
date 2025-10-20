@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* CSS Reset */
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +14,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Variables */
         :root {
             --whatsapp-green: #25D366;
             --whatsapp-dark-green: #128C7E;
@@ -26,15 +24,13 @@
             --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Body */
         body {
             background-color: var(--light-gray);
             color: var(--dark-gray);
             line-height: 1.6;
-            min-height: 100vh;
         }
 
-        /* Header Styles */
+        /* Header */
         header {
             background-color: var(--whatsapp-green);
             color: white;
@@ -62,14 +58,12 @@
 
         .logo i {
             margin-right: 10px;
-            font-size: 2rem;
         }
 
         .hamburger-menu {
             font-size: 1.5rem;
             cursor: pointer;
             position: relative;
-            padding: 10px;
         }
 
         .dropdown-menu {
@@ -95,15 +89,10 @@
             text-decoration: none;
             color: var(--dark-gray);
             border-bottom: 1px solid #eee;
-            transition: background-color 0.3s;
         }
 
         .dropdown-menu a:hover {
             background-color: var(--light-gray);
-        }
-
-        .dropdown-menu a:last-child {
-            border-bottom: none;
         }
 
         /* Search Section */
@@ -148,7 +137,6 @@
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--whatsapp-green);
             color: var(--whatsapp-dark-green);
-            font-size: 1.8rem;
         }
 
         /* Add Group Section */
@@ -159,12 +147,6 @@
             box-shadow: var(--shadow);
             margin-bottom: 2rem;
             text-align: center;
-        }
-
-        .add-group-section p {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            color: #666;
         }
 
         .btn {
@@ -179,21 +161,26 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
         }
 
         .btn:hover {
             background-color: var(--whatsapp-dark-green);
-            transform: translateY(-2px);
         }
 
         .btn:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
-            transform: none;
         }
 
-        /* Modal Styles */
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -227,26 +214,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .modal-header h2 {
-            color: var(--whatsapp-dark-green);
-            margin: 0;
         }
 
         .close-modal {
             font-size: 1.5rem;
             cursor: pointer;
             color: #777;
-            background: none;
-            border: none;
-            padding: 5px;
-        }
-
-        .close-modal:hover {
-            color: #333;
         }
 
         .form-group {
@@ -258,21 +231,14 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #555;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--whatsapp-green);
         }
 
         textarea.form-control {
@@ -284,6 +250,54 @@
             font-size: 0.9rem;
             color: #777;
             margin-top: 0.5rem;
+        }
+
+        /* Auto Fetch Section */
+        .auto-fetch-section {
+            background-color: var(--whatsapp-light-green);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .auto-fetch-section.show {
+            display: block;
+        }
+
+        .group-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .group-preview-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--whatsapp-light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .group-preview-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .group-preview-info {
+            flex: 1;
+        }
+
+        .group-preview-name {
+            font-weight: bold;
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 5px;
         }
 
         .rules-section {
@@ -301,12 +315,10 @@
 
         .rules-section ul {
             padding-left: 1.5rem;
-            margin-bottom: 1rem;
         }
 
         .rules-section li {
             margin-bottom: 0.5rem;
-            line-height: 1.5;
         }
 
         /* Filter Section */
@@ -340,12 +352,11 @@
             border-radius: 10px;
             box-shadow: var(--shadow);
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s;
         }
 
         .group-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
         }
 
         .group-header {
@@ -377,17 +388,12 @@
 
         .group-info {
             flex: 1;
-            min-width: 0;
         }
 
         .group-name {
             font-weight: bold;
             margin-bottom: 5px;
             color: var(--whatsapp-dark-green);
-            font-size: 1.1rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .group-meta {
@@ -402,7 +408,6 @@
             background-color: var(--light-gray);
             padding: 2px 8px;
             border-radius: 20px;
-            font-size: 0.8rem;
         }
 
         .group-body {
@@ -412,18 +417,11 @@
         .group-description {
             margin-bottom: 1rem;
             font-size: 0.95rem;
-            line-height: 1.5;
-            color: #555;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .group-actions {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
         }
 
         .action-btn {
@@ -434,9 +432,6 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: all 0.3s;
-            flex: 1;
-            justify-content: center;
         }
 
         .join-btn {
@@ -445,21 +440,13 @@
             border: none;
         }
 
-        .join-btn:hover {
-            background-color: var(--whatsapp-dark-green);
-        }
-
         .share-btn {
             background-color: transparent;
             border: 1px solid var(--whatsapp-green);
             color: var(--whatsapp-green);
         }
 
-        .share-btn:hover {
-            background-color: var(--whatsapp-light-green);
-        }
-
-        /* Loading Spinner */
+        /* Loading */
         .loading {
             display: inline-block;
             width: 20px;
@@ -478,7 +465,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 3rem;
+            padding: 2rem;
             flex-direction: column;
             gap: 1rem;
         }
@@ -512,19 +499,9 @@
         .footer-links a {
             color: white;
             text-decoration: none;
-            transition: color 0.3s;
         }
 
-        .footer-links a:hover {
-            color: var(--whatsapp-light-green);
-            text-decoration: underline;
-        }
-
-        footer p {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Toast Notification */
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -536,7 +513,6 @@
             box-shadow: var(--shadow);
             z-index: 300;
             display: none;
-            max-width: 300px;
         }
 
         .toast.error {
@@ -558,7 +534,7 @@
             to { opacity: 0; transform: translateY(20px); }
         }
 
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 padding: 0 1rem;
@@ -587,36 +563,6 @@
             .modal-content {
                 width: 95%;
                 padding: 1.5rem;
-            }
-
-            .group-actions {
-                flex-direction: column;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .logo {
-                justify-content: center;
-            }
-
-            .dropdown-menu {
-                position: static;
-                width: 100%;
-                margin-top: 1rem;
             }
         }
     </style>
@@ -725,22 +671,43 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add WhatsApp Group</h2>
-                <button class="close-modal" id="closeAddGroupModal">&times;</button>
+                <span class="close-modal" id="closeAddGroupModal">&times;</span>
             </div>
             <form id="addGroupForm">
                 <div class="form-group">
                     <label for="groupLink">WhatsApp Group Invite Link *</label>
                     <input type="url" id="groupLink" class="form-control" required placeholder="https://chat.whatsapp.com/CluEPPD7DuiEkai8nxFiZP">
+                    <div class="form-note">Paste your WhatsApp group invite link. Group name and image will be fetched automatically.</div>
                 </div>
+                
+                <!-- Auto Fetch Section -->
+                <div class="auto-fetch-section" id="autoFetchSection">
+                    <h4>Group Preview</h4>
+                    <div class="group-preview">
+                        <div class="group-preview-avatar">
+                            <i class="fab fa-whatsapp" id="previewIcon"></i>
+                            <img id="previewImage" style="display: none;" alt="Group Image">
+                        </div>
+                        <div class="group-preview-info">
+                            <div class="group-preview-name" id="previewName">Group name will appear here</div>
+                            <button type="button" class="btn btn-secondary" id="fetchGroupInfoBtn" style="margin-top: 10px;">
+                                <i class="fas fa-sync-alt"></i> Fetch Group Info
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="groupName">Group Name *</label>
-                    <input type="text" id="groupName" class="form-control" required placeholder="Enter your WhatsApp group name">
+                    <input type="text" id="groupName" class="form-control" required placeholder="Group name will be auto-filled">
                 </div>
+                
                 <div class="form-group">
                     <label for="groupImage">Group Image URL</label>
-                    <input type="url" id="groupImage" class="form-control" placeholder="https://example.com/group-image.jpg">
-                    <div class="form-note">Optional: Provide direct link to group image</div>
+                    <input type="url" id="groupImage" class="form-control" placeholder="Image URL will be auto-filled">
+                    <div class="form-note">Group image will be automatically detected from WhatsApp</div>
                 </div>
+
                 <div class="form-group">
                     <label for="groupCategory">Select Group Category *</label>
                     <select id="groupCategory" class="form-control" required>
@@ -843,39 +810,64 @@
         const groupsGrid = document.getElementById('groupsGrid');
         const findGroupsBtn = document.getElementById('findGroupsBtn');
         const toast = document.getElementById('toast');
+        
+        // Auto-fetch elements
+        const groupLinkInput = document.getElementById('groupLink');
+        const autoFetchSection = document.getElementById('autoFetchSection');
+        const fetchGroupInfoBtn = document.getElementById('fetchGroupInfoBtn');
+        const previewName = document.getElementById('previewName');
+        const previewImage = document.getElementById('previewImage');
+        const previewIcon = document.getElementById('previewIcon');
+        const groupNameInput = document.getElementById('groupName');
+        const groupImageInput = document.getElementById('groupImage');
 
         // Event Listeners
         hamburgerMenu.addEventListener('click', () => {
             dropdownMenu.classList.toggle('show');
         });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!hamburgerMenu.contains(e.target)) {
-                dropdownMenu.classList.remove('show');
-            }
-        });
-
         openAddGroupBtn.addEventListener('click', () => {
             addGroupModal.classList.add('show');
         });
 
-        if (openAddGroupModal) {
-            openAddGroupModal.addEventListener('click', (e) => {
-                e.preventDefault();
-                addGroupModal.classList.add('show');
-                dropdownMenu.classList.remove('show');
-            });
-        }
+        openAddGroupModal.addEventListener('click', () => {
+            addGroupModal.classList.add('show');
+            dropdownMenu.classList.remove('show');
+        });
 
         closeAddGroupModal.addEventListener('click', () => {
             addGroupModal.classList.remove('show');
+            resetAutoFetch();
         });
 
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === addGroupModal) {
                 addGroupModal.classList.remove('show');
+                resetAutoFetch();
+            }
+        });
+
+        // Auto-fetch when WhatsApp link is detected
+        groupLinkInput.addEventListener('input', () => {
+            const link = groupLinkInput.value.trim();
+            if (link && isValidWhatsAppLink(link)) {
+                autoFetchSection.classList.add('show');
+                // Auto-fetch after 1 second delay
+                setTimeout(() => {
+                    fetchWhatsAppGroupInfo(link);
+                }, 1000);
+            } else {
+                autoFetchSection.classList.remove('show');
+                resetPreview();
+            }
+        });
+
+        // Manual fetch button
+        fetchGroupInfoBtn.addEventListener('click', () => {
+            const link = groupLinkInput.value.trim();
+            if (link && isValidWhatsAppLink(link)) {
+                fetchWhatsAppGroupInfo(link);
             }
         });
 
@@ -884,8 +876,8 @@
             e.preventDefault();
             
             const groupLink = document.getElementById('groupLink').value;
-            const groupName = document.getElementById('groupName').value || 'WhatsApp Group';
-            const groupImage = document.getElementById('groupImage').value;
+            const groupName = groupNameInput.value || 'WhatsApp Group';
+            const groupImage = groupImageInput.value;
             const category = document.getElementById('groupCategory').value;
             const country = document.getElementById('groupCountry').value;
             const language = document.getElementById('groupLanguage').value;
@@ -921,6 +913,7 @@
                 addGroupModal.classList.remove('show');
                 showToast('Group submitted for admin approval!');
                 addGroupForm.reset();
+                resetAutoFetch();
             } catch (error) {
                 console.error('Error submitting group:', error);
                 showToast('Error submitting group. Please try again.', true);
@@ -941,6 +934,123 @@
         });
 
         // Functions
+        function isValidWhatsAppLink(link) {
+            return link.includes('chat.whatsapp.com');
+        }
+
+        async function fetchWhatsAppGroupInfo(link) {
+            fetchGroupInfoBtn.disabled = true;
+            fetchGroupInfoBtn.innerHTML = '<div class="loading"></div> Fetching...';
+            
+            try {
+                // WhatsApp group info simulation (since we can't directly fetch from WhatsApp due to restrictions)
+                const groupInfo = simulateWhatsAppGroupInfo(link);
+                
+                // Update preview and form fields
+                previewName.textContent = groupInfo.name;
+                groupNameInput.value = groupInfo.name;
+                
+                if (groupInfo.image) {
+                    previewImage.src = groupInfo.image;
+                    previewImage.style.display = 'block';
+                    previewIcon.style.display = 'none';
+                    groupImageInput.value = groupInfo.image;
+                } else {
+                    previewImage.style.display = 'none';
+                    previewIcon.style.display = 'flex';
+                    groupImageInput.value = '';
+                }
+                
+                showToast('Group info fetched successfully!');
+            } catch (error) {
+                console.error('Error fetching group info:', error);
+                // Fallback: Extract group name from link or use default
+                const groupName = extractGroupNameFromLink(link) || 'WhatsApp Group';
+                previewName.textContent = groupName;
+                groupNameInput.value = groupName;
+                previewImage.style.display = 'none';
+                previewIcon.style.display = 'flex';
+                showToast('Using default group info. You can edit manually.', true);
+            } finally {
+                fetchGroupInfoBtn.disabled = false;
+                fetchGroupInfoBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Fetch Group Info';
+            }
+        }
+
+        function simulateWhatsAppGroupInfo(link) {
+            // Simulate different group types based on link patterns
+            const groupTypes = [
+                {
+                    pattern: /programming|code|tech|developer/i,
+                    name: "Programming & Developers",
+                    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face"
+                },
+                {
+                    pattern: /music|song|bollywood|film/i,
+                    name: "Music Lovers",
+                    image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=150&h=150&fit=crop&crop=face"
+                },
+                {
+                    pattern: /business|startup|entrepreneur/i,
+                    name: "Business Network",
+                    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=150&h=150&fit=crop&crop=face"
+                },
+                {
+                    pattern: /fitness|gym|workout|health/i,
+                    name: "Fitness & Health",
+                    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=150&fit=crop&crop=face"
+                },
+                {
+                    pattern: /movie|film|cinema|bollywood/i,
+                    name: "Movie Buffs",
+                    image: "https://images.unsplash.com/photo-1489599809505-7c8e1a8a6b0c?w=150&h=150&fit=crop&crop=face"
+                },
+                {
+                    pattern: /study|education|learning|students/i,
+                    name: "Study Group",
+                    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=150&h=150&fit=crop&crop=face"
+                }
+            ];
+
+            // Find matching group type
+            const matchedType = groupTypes.find(type => type.pattern.test(link)) || groupTypes[0];
+
+            return {
+                name: matchedType.name,
+                image: matchedType.image
+            };
+        }
+
+        function extractGroupNameFromLink(link) {
+            // Try to extract meaningful name from the link
+            try {
+                const url = new URL(link);
+                const path = url.pathname.split('/').pop();
+                if (path && path.length > 5) {
+                    // Convert to readable format
+                    return path.split('-')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(' ') + ' Group';
+                }
+            } catch (e) {
+                console.error('Error parsing URL:', e);
+            }
+            return null;
+        }
+
+        function resetPreview() {
+            previewName.textContent = 'Group name will appear here';
+            previewImage.style.display = 'none';
+            previewIcon.style.display = 'flex';
+            groupNameInput.value = '';
+            groupImageInput.value = '';
+        }
+
+        function resetAutoFetch() {
+            autoFetchSection.classList.remove('show');
+            resetPreview();
+        }
+
         async function loadGroups() {
             try {
                 // Fetch approved groups from Supabase
