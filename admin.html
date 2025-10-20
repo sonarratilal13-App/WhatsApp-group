@@ -30,6 +30,110 @@
             line-height: 1.6;
         }
 
+        /* Login Section */
+        .login-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-dark-green));
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo i {
+            font-size: 3rem;
+            color: var(--whatsapp-green);
+            margin-bottom: 1rem;
+        }
+
+        .login-logo h1 {
+            color: var(--whatsapp-dark-green);
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--whatsapp-green);
+            outline: none;
+        }
+
+        .btn {
+            background-color: var(--whatsapp-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background-color: var(--whatsapp-dark-green);
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Admin Panel (Initially Hidden) */
+        .admin-panel {
+            display: none;
+        }
+
         /* Header */
         header {
             background-color: var(--whatsapp-green);
@@ -60,6 +164,7 @@
         .admin-nav {
             display: flex;
             gap: 1rem;
+            align-items: center;
         }
 
         .admin-nav a {
@@ -72,6 +177,20 @@
 
         .admin-nav a:hover, .admin-nav a.active {
             background-color: var(--whatsapp-dark-green);
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         /* Main Content */
@@ -264,6 +383,11 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .login-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
             .header-container {
                 padding: 0 1rem;
             }
@@ -280,56 +404,93 @@
                 flex-direction: column;
                 gap: 0.5rem;
             }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                padding: 0.75rem 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
+    <!-- Login Section -->
+    <section class="login-section" id="loginSection">
+        <div class="login-container">
+            <div class="login-logo">
                 <i class="fab fa-whatsapp"></i>
-                <span>GroupAdda Admin</span>
+                <h1>GroupAdda Admin</h1>
             </div>
-            <div class="admin-nav">
-                <a href="index.html">Back to Site</a>
-                <a href="#" class="active">Admin Panel</a>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Admin Panel (Initially Hidden) -->
+    <section class="admin-panel" id="adminPanel">
+        <!-- Header -->
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>GroupAdda Admin</span>
+                </div>
+                <div class="admin-nav">
+                    <a href="index.html">Back to Site</a>
+                    <a href="#" class="active">Admin Panel</a>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <h1 class="section-title">GroupAdda Admin Panel</h1>
+        <!-- Main Content -->
+        <div class="container">
+            <h1 class="section-title">GroupAdda Admin Panel</h1>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <div class="tab active" data-tab="pending">Pending Groups</div>
-            <div class="tab" data-tab="approved">Approved Groups</div>
-        </div>
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="pending">Pending Groups</div>
+                <div class="tab" data-tab="approved">Approved Groups</div>
+            </div>
 
-        <!-- Pending Groups Tab -->
-        <div class="tab-content active" id="pendingTab">
-            <h2 class="section-title">Pending Groups for Approval</h2>
-            <div class="groups-grid" id="pendingGroupsGrid">
-                <div class="loading-container">
-                    <div class="spinner"></div>
-                    <p>Loading pending groups...</p>
+            <!-- Pending Groups Tab -->
+            <div class="tab-content active" id="pendingTab">
+                <h2 class="section-title">Pending Groups for Approval</h2>
+                <div class="groups-grid" id="pendingGroupsGrid">
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <p>Loading pending groups...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approved Groups Tab -->
+            <div class="tab-content" id="approvedTab">
+                <h2 class="section-title">Approved Groups</h2>
+                <div class="groups-grid" id="approvedGroupsGrid">
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <p>Loading approved groups...</p>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Approved Groups Tab -->
-        <div class="tab-content" id="approvedTab">
-            <h2 class="section-title">Approved Groups</h2>
-            <div class="groups-grid" id="approvedGroupsGrid">
-                <div class="loading-container">
-                    <div class="spinner"></div>
-                    <p>Loading approved groups...</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
@@ -342,12 +503,81 @@
         // Initialize Supabase client
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Admin Credentials (In a real application, these should be stored securely on the server)
+        const ADMIN_CREDENTIALS = {
+            username: "admin",
+            password: "GroupAdda2023!"
+        };
+
         // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
         const pendingGroupsGrid = document.getElementById('pendingGroupsGrid');
         const approvedGroupsGrid = document.getElementById('approvedGroupsGrid');
         const toast = document.getElementById('toast');
+
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            if (isLoggedIn === 'true') {
+                showAdminPanel();
+            }
+        });
+
+        // Login Form Submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<div class="loading"></div> Authenticating...';
+            
+            // Simulate authentication (in a real app, this would be server-side)
+            setTimeout(() => {
+                if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                    // Successful login
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    showAdminPanel();
+                    showToast('Login successful!');
+                } else {
+                    // Failed login
+                    showToast('Invalid username or password', true);
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                }
+            }, 1000);
+        });
+
+        // Logout Functionality
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('adminLoggedIn');
+            showLoginForm();
+            showToast('You have been logged out');
+        });
+
+        // Show Admin Panel
+        function showAdminPanel() {
+            loginSection.style.display = 'none';
+            adminPanel.style.display = 'block';
+            loadPendingGroups();
+        }
+
+        // Show Login Form
+        function showLoginForm() {
+            loginSection.style.display = 'flex';
+            adminPanel.style.display = 'none';
+            loginForm.reset();
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        }
 
         // Tab Switching
         tabs.forEach(tab => {
@@ -610,11 +840,6 @@
                 toast.classList.remove('show');
             }, 3000);
         }
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            loadPendingGroups();
-        });
     </script>
 </body>
 </html>
