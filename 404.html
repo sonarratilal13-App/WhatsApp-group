@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - GroupShare.in</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            max-width: 550px;
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #00ff7f;
+        }
+        h1 {
+            font-size: 110px;
+            margin: 0;
+            background: linear-gradient(45deg, #00ff7f, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            font-size: 18px;
+            color: #cfcfcf;
+            margin: 10px 0 25px;
+        }
+        a {
+            padding: 12px 28px;
+            background: #00ff7f;
+            color: #000;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        a:hover {
+            background: #00c86b;
+        }
+        .emoji {
+            font-size: 65px;
+            margin-bottom: 10px;
+        }
+
+        /* Glow Animation */
+        .glow {
+            animation: glowEffect 2s infinite alternate;
+        }
+        @keyframes glowEffect {
+            from {
+                text-shadow: 0 0 10px #00ff7f;
+            }
+            to {
+                text-shadow: 0 0 25px #00ff7f;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="logo glow">GroupShare.in</div>
+        <div class="emoji">⚠️</div>
+        <h1>404</h1>
+        <p>Oops! Page Not Found.  
+           Shayad page move ho gaya ya URL galat ho sakta hai.</p>
+        <a href="/">⬅ Back to Home</a>
+    </div>
+
+</body>
+</html>
