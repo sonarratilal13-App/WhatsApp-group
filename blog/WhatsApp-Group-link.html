@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Group Link - पूरी जानकारी हिंदी में | Group Share</title>
+    <meta name="description" content="WhatsApp Group Link की पूरी जानकारी हिंदी में। जानें WhatsApp Group Link क्या है, कैसे बनाएं, कैसे Join करें और Group Share पर कैसे Publish करें।">
+    <meta name="keywords" content="whatsapp group link, whatsapp group join, group link kaise banaye, group share, whatsapp group invite">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --whatsapp-green: #25D366;
+            --whatsapp-dark-green: #128C7E;
+            --whatsapp-light-green: #dcf8c6;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.7;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--whatsapp-green);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background-color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .breadcrumb a {
+            color: var(--whatsapp-dark-green);
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            color: var(--dark-gray);
+        }
+
+        /* Blog Content */
+        .blog-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .blog-header {
+            margin-bottom: 3rem;
+        }
+
+        .blog-title {
+            font-size: 2.2rem;
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 2rem;
+            color: #777;
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .toc {
+            background-color: var(--whatsapp-light-green);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc h3 {
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 1rem;
+        }
+
+        .toc ul {
+            list-style-type: none;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "•";
+            color: var(--whatsapp-green);
+            position: absolute;
+            left: 0;
+        }
+
+        .toc a {
+            color: var(--dark-gray);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            color: var(--whatsapp-green);
+        }
+
+        /* Article Content */
+        .article-content {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .article-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .article-section h2 {
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--whatsapp-light-green);
+            padding-bottom: 0.5rem;
+        }
+
+        .article-section h3 {
+            color: var(--whatsapp-dark-green);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        .article-section p {
+            margin-bottom: 1rem;
+        }
+
+        .article-section ul, .article-section ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .article-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background-color: var(--whatsapp-light-green);
+            border-left: 4px solid var(--whatsapp-green);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .step-box {
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--whatsapp-light-green);
+        }
+
+        .step-number {
+            display: inline-block;
+            background-color: var(--whatsapp-green);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-dark-green));
+            color: white;
+            border-radius: 10px;
+            padding: 2.5rem;
+            text-align: center;
+            margin: 2.5rem 0;
+        }
+
+        .cta-box h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: var(--whatsapp-dark-green);
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .info-table th, .info-table td {
+            border: 1px solid var(--whatsapp-light-green);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .info-table th {
+            background-color: var(--whatsapp-light-green);
+            color: var(--whatsapp-dark-green);
+        }
+
+        .info-table tr:nth-child(even) {
+            background-color: var(--light-gray);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-top: 3rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--whatsapp-dark-green);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--whatsapp-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .blog-title {
+                font-size: 1.8rem;
+            }
+            
+            .article-content {
+                padding: 2rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <a href="index.html">Group Share</a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="groups.html">Groups</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="index.html">Home</a> > <a href="blog.html">Blog</a> > <span>WhatsApp Group Link</span>
+        </div>
+    </div>
+
+    <!-- Blog Content -->
+    <div class="blog-container">
+        <div class="blog-header">
+            <h1 class="blog-title">WhatsApp Group Link - पूरी जानकारी हिंदी में</h1>
+            <div class="blog-meta">
+                <span><i class="far fa-calendar"></i> November 15, 2023</span>
+                <span><i class="far fa-clock"></i> 10 min read</span>
+                <span><i class="far fa-user"></i> Group Share Team</span>
+            </div>
+            
+            <div class="toc">
+                <h3>इस आर्टिकल में आप पढ़ेंगे:</h3>
+                <ul>
+                    <li><a href="#what-is">WhatsApp Group Link क्या है?</a></li>
+                    <li><a href="#create">Group Link कैसे बनाएं?</a></li>
+                    <li><a href="#join">Group Link से कैसे Join करें?</a></li>
+                    <li><a href="#share">Group Link कैसे Share करें?</a></li>
+                    <li><a href="#benefits">Group Link के फायदे</a></li>
+                    <li><a href="#groupshare">Group Share पर Group Link कैसे Publish करें?</a></li>
+                    <li><a href="#faq">सवाल-जवाब</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="article-content">
+            <div class="article-section" id="what-is">
+                <h2>WhatsApp Group Link क्या है?</h2>
+                <p>WhatsApp Group Link एक विशेष URL (वेब एड्रेस) होता है जो आपको किसी WhatsApp Group में directly join करने की अनुमति देता है। यह एक invite link की तरह काम करता है जिसे group admin द्वारा generate किया जाता है।</p>
+                
+                <div class="highlight-box">
+                    <p><strong>महत्वपूर्ण:</strong> WhatsApp Group Link सिर्फ group admin ही create कर सकता है। Regular members group link generate नहीं कर सकते।</p>
+                </div>
+                
+                <p>एक typical WhatsApp Group Link इस तरह दिखता है:</p>
+                <p><code>https://chat.whatsapp.com/AbC123dEfGhIjkL</code></p>
+                
+                <p>जब कोई user इस link पर click करता है, तो उसे automatically उस group में add कर दिया जाता है (अगर group settings allow करती हैं)।</p>
+            </div>
+
+            <div class="article-section" id="create">
+                <h2>WhatsApp Group Link कैसे बनाएं? (Step-by-Step Guide)</h2>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">1</span> WhatsApp खोलें और Group Select करें</h3>
+                    <p>सबसे पहले WhatsApp application open करें और उस group को select करें जिसके लिए आप link create करना चाहते हैं।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">2</span> Group Info में जाएं</h3>
+                    <p>Group chat के top पर group name पर tap करें। यह आपको group information screen पर ले जाएगा।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">3</span> Invite Link Option ढूंढें</h3>
+                    <p>Group info screen में scroll करके "Invite to Group via Link" option ढूंढें। यह आमतौर पर group settings के section में होता है।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">4</span> Link Generate करें</h3>
+                    <p>"Invite to Group via Link" पर tap करें। WhatsApp automatically एक नया group link generate कर देगा।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">5</span> Link Copy या Share करें</h3>
+                    <p>Generate किए गए link को copy करें या directly किसी के साथ share करें।</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <p><strong>टिप:</strong> आप group link को reset भी कर सकते हैं ताकि पुराना link काम करना बंद कर दे। इससे आप unwanted users को group से बाहर रख सकते हैं।</p>
+                </div>
+            </div>
+
+            <div class="article-section" id="join">
+                <h2>WhatsApp Group Link से कैसे Join करें?</h2>
+                
+                <p>किसी WhatsApp Group में join करना बहुत आसान है:</p>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">1</span> Group Link प्राप्त करें</h3>
+                    <p>सबसे पहले आपको valid WhatsApp Group Link की जरूरत होगी। यह link आपको group admin, friend, या Group Share जैसी websites से मिल सकता है।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">2</span> Link पर Click करें</h3>
+                    <p>Group link पर click करें। यह आपको WhatsApp application में redirect कर देगा।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">3</span> Join Group Button दबाएं</h3>
+                    <p>WhatsApp आपको group information दिखाएगा। "Join Group" button पर tap करें।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">4</span> Group में Welcome हो जाएं</h3>
+                    <p>बस! अब आप group के member बन गए हैं और group chats देख व participate कर सकते हैं।</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <p><strong>ध्यान दें:</strong> कुछ groups में approval required होती है। ऐसे cases में admin आपके join request को approve करेगा, तभी आप group में add हो पाएंगे।</p>
+                </div>
+            </div>
+
+            <div class="article-section" id="share">
+                <h2>WhatsApp Group Link कैसे Share करें?</h2>
+                
+                <p>आप अपने WhatsApp Group Link को multiple ways में share कर सकते हैं:</p>
+                
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Direct WhatsApp Message</td>
+                            <td>सीधे WhatsApp chat में link send करना</td>
+                            <td>Friends और Contacts</td>
+                        </tr>
+                        <tr>
+                            <td>Social Media</td>
+                            <td>Facebook, Instagram, Twitter पर post करना</td>
+                            <td>Public Groups</td>
+                        </tr>
+                        <tr>
+                            <td>Group Share Platform</td>
+                            <td>Groupshare.in जैसी websites पर publish करना</td>
+                            <td>Maximum Visibility</td>
+                        </tr>
+                        <tr>
+                            <td>QR Code</td>
+                            <td>Link को QR code में convert करना</td>
+                            <td>Offline Events</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>Email के through share करना</td>
+                            <td>Professional Groups</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="article-section" id="benefits">
+                <h2>WhatsApp Group Link के फायदे</h2>
+                
+                <h3>1. Easy Invitation Process</h3>
+                <p>Manual रूप से हर member को add करने की जरूरत नहीं। एक link share करें और interested users खुद join कर लें।</p>
+                
+                <h3>2. Time Saving</h3>
+                <p>बड़ी संख्या में users को quickly add कर सकते हैं।</p>
+                
+                <h3>3. Wider Reach</h3>
+                <p>Link को social media, websites, और other platforms पर share करके更多人 तक पहुंच सकते हैं।</p>
+                
+                <h3>4. Control और Security</h3>
+                <p>Link को reset करके access control maintain कर सकते हैं।</p>
+                
+                <h3>5. Analytics (Group Share के साथ)</h3>
+                <p>Group Share पर group publish करने पर आपको views और joins की analytics मिलती है।</p>
+            </div>
+
+            <div class="article-section" id="groupshare">
+                <h2>Group Share पर अपना Group Link कैसे Publish करें?</h2>
+                
+                <p>Group Share पर अपना WhatsApp Group publish करने से आपके group की visibility कई गुना बढ़ जाती है। यहां बताया गया है कैसे:</p>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">1</span> Group Share Website Visit करें</h3>
+                    <p>सबसे पहले <a href="https://groupshare.in">groupshare.in</a> website पर जाएं।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">2</span> Add Group Button Click करें</h3>
+                    <p>Homepage पर "Add WhatsApp Group" button पर click करें।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">3</span> Form Fill करें</h3>
+                    <p>निम्नलिखित information provide करें:</p>
+                    <ul>
+                        <li><strong>Group Link:</strong> आपका WhatsApp Group Invite Link</li>
+                        <li><strong>Group Name:</strong> आकर्षक और descriptive group name</li>
+                        <li><strong>Category:</strong> आपके group की category select करें</li>
+                        <li><strong>Description:</strong> Group के बारे में detailed description</li>
+                        <li><strong>Country & Language:</strong> Relevant information select करें</li>
+                    </ul>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">4</span> Submit करें</h3>
+                    <p>Form submit करने के बाद हमारी team आपके group को review करेगी और approve कर देगी।</p>
+                </div>
+                
+                <div class="step-box">
+                    <h3><span class="step-number">5</span> Google Search में Appear होना</h3>
+                    <p>Approve होने के बाद आपका group Group Share पर दिखने लगेगा और कुछ दिनों में Google Search में भी appear होने लगेगा।</p>
+                </div>
+                
+                <div class="cta-box">
+                    <h3>अपना WhatsApp Group आज ही Publish करें!</h3>
+                    <p>Group Share के through हजारों interested users तक पहुंचें। Free में अपने group की visibility बढ़ाएं।</p>
+                    <a href="submit-group.html" class="cta-button">अभी Group Add करें</a>
+                </div>
+            </div>
+
+            <div class="faq-section" id="faq">
+                <h2>WhatsApp Group Link के बारे में सवाल-जवाब</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">क्या WhatsApp Group Link expire होता है?</div>
+                    <p>नहीं, WhatsApp Group Link automatically expire नहीं होता है। लेकिन admin manually link को reset कर सकता है, जिससे पुराना link काम करना बंद कर देता है।</p>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">क्या group link से join करने वालों को approve करना जरूरी है?</div>
+                    <p>यह group settings पर depend करता है। अगर group में "Group Invite Link Approval" setting on है, तब admin को manually approve करना होगा।</p>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">एक group में maximum कितने members हो सकते हैं?</div>
+                    <p>WhatsApp में एक group में maximum 1024 members हो सकते हैं।</p>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">क्या मैं group link को customize कर सकता हूं?</div>
+                    <p>नहीं, WhatsApp group links automatically generate होते हैं और customize नहीं किए जा सकते।</p>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Group Share पर group publish करने के क्या फायदे हैं?</div>
+                    <p>Group Share पर group publish करने से आपके group की Google Search में visibility बढ़ती है, targeted audience मिलती है, और group growth fast होता है।</p>
+                </div>
+            </div>
+
+            <div class="article-section">
+                <h2>निष्कर्ष</h2>
+                <p>WhatsApp Group Links group management और growth के लिए एक powerful tool हैं। एक simple link के through आप हज़ारों interested users तक पहुंच सकते हैं। Group Share जैसी platforms का use करके आप अपने group की visibility और भी बढ़ा सकते हैं और relevant audience attract कर सकते हैं।</p>
+                
+                <div class="highlight-box">
+                    <p><strong>याद रखें:</strong> हमेशा group rules set करें और spam से बचने के लिए regular moderation करें। Group Share पर group publish करके आप quality members प्राप्त कर सकते हैं।</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Group Share</h3>
+                <p>WhatsApp Groups की सबसे बड़ी directory। दुनिया भर के communities से connect हों।</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="groups.html">Find Groups</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect With Us</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Group Share. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update year in footer
+            document.querySelector('.footer-bottom p').innerHTML = 
+                document.querySelector('.footer-bottom p').innerHTML.replace('2023', new Date().getFullYear());
+                
+            // Smooth scrolling for table of contents links
+            document.querySelectorAll('.toc a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
