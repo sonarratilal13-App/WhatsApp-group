@@ -1,98 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Group Links - Join Active Communities | Group Share</title>
     <meta name="description" content="Join 25+ active WhatsApp groups across different categories. Education, business, technology, entertainment groups with verified links.">
     <meta name="keywords" content="whatsapp group links, join whatsapp group, active groups, education groups, business groups">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
-            --primary-color: #25D366;
-            --primary-dark: #128C7E;
-            --light-bg: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-dark: #333333;
-            --text-light: #666666;
-            --border-color: #e0e0e0;
-            --shadow: 0 4px 12px rgba(0,0,0,0.08);
-            --radius: 12px;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark-green: #128C7E;
+            --whatsapp-light-green: #dcf8c6;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: var(--light-bg);
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.7;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        /* Header */
         header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background-color: var(--whatsapp-green);
             color: white;
-            padding: 50px 20px;
-            margin-bottom: 40px;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background-color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .breadcrumb a {
+            color: var(--whatsapp-dark-green);
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            color: var(--dark-gray);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-dark-green));
+            color: white;
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
         }
 
-        header::before {
-            content: "";
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        header::after {
-            content: "";
-            position: absolute;
-            bottom: -80px;
-            left: -50px;
-            width: 250px;
-            height: 250px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-        }
-
-        h1 {
+        .page-header h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 1rem;
         }
 
-        .subtitle {
+        .page-subtitle {
             font-size: 1.2rem;
             opacity: 0.9;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 2rem;
         }
 
         .stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin-top: 30px;
-            position: relative;
-            z-index: 1;
+            gap: 3rem;
+            margin-top: 2rem;
         }
 
         .stat {
@@ -105,25 +142,51 @@
             margin-bottom: 5px;
         }
 
-        .category {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
+        /* Groups Container */
+        .groups-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
 
-        .category:hover {
-            transform: translateY(-5px);
+        .category-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: var(--white);
+            border: 2px solid var(--light-gray);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--whatsapp-green);
+            color: white;
+            border-color: var(--whatsapp-green);
+        }
+
+        .category {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
         }
 
         .category-title {
             font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border-color);
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--whatsapp-light-green);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -133,13 +196,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 0;
-            border-bottom: 1px solid var(--border-color);
-            transition: background 0.2s;
-        }
-
-        .group:hover {
-            background: rgba(37, 211, 102, 0.05);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
         }
 
         .group:last-child {
@@ -148,28 +206,20 @@
 
         .group-info h3 {
             font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
         }
 
         .group-info p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 5px;
+            color: #666;
+            margin-bottom: 0.5rem;
         }
 
         .group-meta {
             display: flex;
-            gap: 15px;
-            color: var(--text-light);
-            font-size: 0.85rem;
-            margin-top: 5px;
-        }
-
-        .group-meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            gap: 1.5rem;
+            color: #777;
+            font-size: 0.9rem;
         }
 
         .status-active {
@@ -187,141 +237,161 @@
         }
 
         .join-btn {
-            background: var(--primary-color);
+            background: var(--whatsapp-green);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 5px rgba(37, 211, 102, 0.3);
+            font-weight: 500;
+            transition: background 0.3s;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .join-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(37, 211, 102, 0.4);
+            background: var(--whatsapp-dark-green);
         }
 
-        .join-btn:active {
-            transform: translateY(0);
-        }
-
-        .safety-tips {
+        .warning-box {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
-            border-radius: var(--radius);
-            padding: 25px;
-            margin: 40px 0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box h3 {
+            color: #856404;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--whatsapp-dark-green);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
             position: relative;
         }
 
-        .safety-tips h3 {
-            color: #856404;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--whatsapp-green);
         }
 
-        .safety-tips p {
-            margin-bottom: 8px;
-            color: #856404;
+        .footer-links {
+            list-style: none;
         }
 
-        .category-filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
+        .footer-links li {
+            margin-bottom: 0.8rem;
         }
 
-        .filter-btn {
-            background: white;
-            border: 2px solid var(--border-color);
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
         }
 
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary-color);
+        .footer-links a:hover {
             color: white;
-            border-color: var(--primary-color);
         }
 
-        footer {
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
-            padding: 40px 0;
-            color: var(--text-light);
-            font-size: 0.95rem;
-            background: white;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #ccc;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            color: var(--text-light);
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
+        /* Responsive */
+        @media (max-width: 992px) {
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
+            .header-container {
+                padding: 0 1rem;
             }
             
-            h1 {
+            .nav-links {
+                display: none;
+            }
+            
+            .page-header h1 {
                 font-size: 2rem;
             }
             
             .stats {
-                gap: 25px;
+                gap: 2rem;
             }
             
             .stat-number {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
             }
             
             .group {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 15px;
+                gap: 1rem;
             }
             
             .join-btn {
                 align-self: stretch;
-                justify-content: center;
+                text-align: center;
             }
+            
+            .groups-container {
+                padding: 0 1rem;
+            }
+            
+            .category {
+                padding: 1.5rem;
+            }
+        }
 
+        @media (max-width: 480px) {
+            .stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .page-header {
+                padding: 2rem 1rem;
+            }
+            
             .category-filters {
                 justify-content: flex-start;
                 overflow-x: auto;
@@ -331,10 +401,34 @@
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <a href="index.html">Group Share</a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="groups.html">Groups</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="index.html">Home</a> > <a href="groups.html">Groups</a> > <span>All Groups</span>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
         <div class="container">
             <h1>WhatsApp Group Links</h1>
-            <p class="subtitle">Join 25+ active communities across different categories</p>
+            <p class="page-subtitle">Join 25+ active communities across different categories</p>
             <div class="stats">
                 <div class="stat">
                     <div class="stat-number">25+</div>
@@ -350,9 +444,10 @@
                 </div>
             </div>
         </div>
-    </header>
+    </div>
 
-    <div class="container">
+    <!-- Groups Container -->
+    <div class="groups-container">
         <!-- Category Filters -->
         <div class="category-filters">
             <button class="filter-btn active" data-category="all">All Groups</button>
@@ -376,12 +471,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -393,12 +483,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -410,12 +495,7 @@
                         <span class="status-very-active">Very Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
         </section>
 
@@ -432,12 +512,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -449,12 +524,7 @@
                         <span class="status-very-active">Very Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -466,12 +536,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
         </section>
 
@@ -488,12 +553,7 @@
                         <span class="status-very-active">Very Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -505,12 +565,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -522,12 +577,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
         </section>
 
@@ -544,12 +594,7 @@
                         <span class="status-very-active">Very Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -561,12 +606,7 @@
                         <span class="status-extremely-active">Extremely Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -578,12 +618,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
         </section>
 
@@ -600,12 +635,7 @@
                         <span class="status-very-active">Very Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -617,12 +647,7 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
 
             <div class="group">
@@ -634,17 +659,12 @@
                         <span class="status-active">Active</span>
                     </div>
                 </div>
-                <button class="join-btn">
-                    <span>Join</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
-                    </svg>
-                </button>
+                <a href="#" class="join-btn">Join Group</a>
             </div>
         </section>
 
         <!-- Safety Tips -->
-        <section class="safety-tips">
+        <section class="warning-box">
             <h3>🔒 Safety Tips</h3>
             <p>• Never share personal information like address or bank details</p>
             <p>• Be cautious of money requests or investment promises</p>
@@ -653,20 +673,49 @@
         </section>
     </div>
 
+    <!-- Footer -->
     <footer>
-        <div class="container">
-            <p>&copy; <span id="currentYear"></span> Group Share. All groups are verified and actively moderated.</p>
-            <p style="margin-top: 10px; color: #888;">Join safely and enjoy meaningful conversations</p>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Group Share</h3>
+                <p>WhatsApp Groups की सबसे बड़ी directory। दुनिया भर के communities से connect हों।</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="groups.html">Find Groups</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect With Us</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Group Share. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Update year in footer
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            document.querySelector('.footer-bottom p').innerHTML = 
+                document.querySelector('.footer-bottom p').innerHTML.replace('2023', new Date().getFullYear());
             
             // Category filtering
             const filterButtons = document.querySelectorAll('.filter-btn');
@@ -691,60 +740,15 @@
                 });
             });
             
-            // Join button functionality with toast notification
+            // Join button functionality
             document.querySelectorAll('.join-btn').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
                     const groupName = this.closest('.group').querySelector('h3').textContent;
+                    const category = this.closest('.category').querySelector('.category-title').textContent;
                     
-                    // Show loading state
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<span>Joining...</span>';
-                    this.disabled = true;
-                    
-                    // Simulate API call delay
-                    setTimeout(() => {
-                        // Show success toast
-                        showToast(`Successfully joined "${groupName}"!`);
-                        
-                        // Reset button
-                        this.innerHTML = originalText;
-                        this.disabled = false;
-                    }, 1500);
+                    alert(`Ready to join "${groupName}" - ${category}\n\nYou'll be redirected to WhatsApp. Remember to follow group rules and engage genuinely.`);
                 });
-            });
-            
-            // Toast notification function
-            function showToast(message) {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                toast.classList.add('show');
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
-            }
-            
-            // Add subtle animations to cards on scroll
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            // Initially set cards to be hidden
-            categories.forEach(category => {
-                category.style.opacity = '0';
-                category.style.transform = 'translateY(20px)';
-                category.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(category);
             });
         });
     </script>
