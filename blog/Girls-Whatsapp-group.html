@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Girls WhatsApp Group - सुरक्षित और अच्छे Groups की पूरी जानकारी</title>
+    <title>Girls WhatsApp Group - सुरक्षित और अच्छे Groups की पूरी जानकारी | Group Share</title>
     <meta name="description" content="Girls WhatsApp Groups के बारे में पूरी जानकारी। जानें कैसे सुरक्षित तरीके से Girls Groups Join करें, Safety Tips और Group Share पर Verified Groups कैसे ढूंढें।">
     <meta name="keywords" content="girls whatsapp group, girls group link, ladies whatsapp group, women whatsapp group, sister group, girls chat group">
     <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -16,104 +17,180 @@
         }
 
         :root {
-            --pink-light: #fff0f6;
-            --pink-medium: #ff85a2;
-            --pink-dark: #db4d6f;
-            --purple-light: #f3f0ff;
-            --purple-dark: #8b5cf6;
-            --text-dark: #333;
-            --text-light: #666;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark-green: #128C7E;
+            --whatsapp-light-green: #dcf8c6;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
             --white: #ffffff;
-            --shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            background-color: #fdf2f8;
-            color: var(--text-dark);
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
             line-height: 1.7;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
         }
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--pink-medium), var(--purple-dark));
+            background-color: var(--whatsapp-green);
             color: white;
-            padding: 2rem 0;
-            text-align: center;
+            padding: 1rem 2rem;
             box-shadow: var(--shadow);
-        }
-
-        .header-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .header-content p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Navigation */
-        .nav-container {
-            background-color: var(--white);
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+
         .nav-links {
             display: flex;
-            justify-content: center;
             gap: 2rem;
-            flex-wrap: wrap;
         }
 
         .nav-links a {
-            color: var(--text-dark);
+            color: white;
             text-decoration: none;
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            transition: all 0.3s;
+            transition: opacity 0.3s;
         }
 
         .nav-links a:hover {
-            background-color: var(--pink-light);
-            color: var(--pink-dark);
+            opacity: 0.8;
         }
 
-        /* Main Content */
-        .content-section {
+        /* Breadcrumb */
+        .breadcrumb {
             background-color: var(--white);
-            border-radius: 15px;
+            padding: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .breadcrumb a {
+            color: var(--whatsapp-dark-green);
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            color: var(--dark-gray);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-dark-green));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        /* Blog Content */
+        .blog-content {
+            background-color: var(--white);
+            border-radius: 10px;
             padding: 2.5rem;
-            margin: 2rem 0;
             box-shadow: var(--shadow);
+            margin-bottom: 2rem;
         }
 
         .section-title {
-            color: var(--pink-dark);
-            margin-bottom: 1.5rem;
+            color: var(--whatsapp-dark-green);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.6rem;
+            border-bottom: 2px solid var(--whatsapp-light-green);
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--pink-light);
-            font-size: 1.8rem;
         }
 
-        /* Introduction */
+        .blog-content p {
+            margin-bottom: 1rem;
+        }
+
+        .blog-content ul, .blog-content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Introduction Box */
         .intro-box {
-            background: linear-gradient(135deg, var(--pink-light), var(--purple-light));
+            background: var(--whatsapp-light-green);
             padding: 2rem;
             border-radius: 10px;
             margin-bottom: 2rem;
-            border-left: 4px solid var(--pink-medium);
+            border-left: 4px solid var(--whatsapp-green);
         }
 
         /* Features Grid */
@@ -125,7 +202,7 @@
         }
 
         .feature-card {
-            background-color: var(--pink-light);
+            background-color: var(--whatsapp-light-green);
             padding: 1.5rem;
             border-radius: 10px;
             text-align: center;
@@ -138,7 +215,7 @@
 
         .feature-icon {
             font-size: 2.5rem;
-            color: var(--pink-dark);
+            color: var(--whatsapp-dark-green);
             margin-bottom: 1rem;
         }
 
@@ -172,7 +249,7 @@
         }
 
         .step-number {
-            background-color: var(--pink-medium);
+            background-color: var(--whatsapp-green);
             color: white;
             width: 40px;
             height: 40px;
@@ -199,7 +276,7 @@
         }
 
         .category-title {
-            color: var(--purple-dark);
+            color: var(--whatsapp-dark-green);
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
@@ -211,20 +288,20 @@
         }
 
         .group-item {
-            background-color: var(--pink-light);
+            background-color: var(--whatsapp-light-green);
             padding: 1.5rem;
             border-radius: 10px;
-            border-left: 4px solid var(--pink-medium);
+            border-left: 4px solid var(--whatsapp-green);
         }
 
         .group-name {
             font-weight: bold;
-            color: var(--pink-dark);
+            color: var(--whatsapp-dark-green);
             margin-bottom: 0.5rem;
         }
 
         .join-btn {
-            background-color: var(--pink-medium);
+            background-color: var(--whatsapp-green);
             color: white;
             border: none;
             padding: 8px 15px;
@@ -232,29 +309,31 @@
             cursor: pointer;
             margin-top: 0.5rem;
             transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .join-btn:hover {
-            background-color: var(--pink-dark);
+            background-color: var(--whatsapp-dark-green);
         }
 
         /* FAQ */
         .faq-item {
             margin-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--light-gray);
             padding-bottom: 1.5rem;
         }
 
         .faq-question {
             font-weight: bold;
-            color: var(--pink-dark);
+            color: var(--whatsapp-dark-green);
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
         }
 
         /* CTA Section */
         .cta-section {
-            background: linear-gradient(135deg, var(--pink-medium), var(--purple-dark));
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-dark-green));
             color: white;
             text-align: center;
             padding: 3rem;
@@ -265,7 +344,7 @@
         .cta-button {
             display: inline-block;
             background-color: white;
-            color: var(--pink-dark);
+            color: var(--whatsapp-dark-green);
             padding: 12px 25px;
             border-radius: 25px;
             text-decoration: none;
@@ -278,47 +357,128 @@
             transform: translateY(-3px);
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--whatsapp-green);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
         /* Footer */
         footer {
-            background-color: var(--text-dark);
+            background-color: var(--whatsapp-dark-green);
             color: white;
-            text-align: center;
-            padding: 2rem 0;
+            padding: 3rem 2rem 2rem;
             margin-top: 3rem;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--whatsapp-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
         }
 
         .footer-links a {
             color: #ddd;
             text-decoration: none;
+            transition: color 0.3s;
         }
 
         .footer-links a:hover {
             color: white;
         }
 
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
         /* Responsive */
+        @media (max-width: 992px) {
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
-            .header-content h1 {
-                font-size: 2rem;
+            .header-container {
+                padding: 0 1rem;
             }
             
             .nav-links {
-                gap: 1rem;
+                display: none;
             }
             
-            .content-section {
-                padding: 1.5rem;
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                gap: 2rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .blog-content {
+                padding: 2rem;
             }
             
             .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .group-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
                 grid-template-columns: 1fr;
             }
         }
@@ -327,31 +487,58 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="container">
-            <div class="header-content">
-                <h1>Girls WhatsApp Group - सुरक्षित और अच्छे Groups</h1>
-                <p>जानें कैसे सही Girls WhatsApp Groups ढूंढें और सुरक्षित तरीके से Connect करें</p>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <a href="index.html">Group Share</a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="groups.html">Groups</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
             </div>
         </div>
     </header>
 
-    <!-- Navigation -->
-    <div class="nav-container">
-        <div class="container">
-            <div class="nav-links">
-                <a href="#intro">परिचय</a>
-                <a href="#types">Groups के प्रकार</a>
-                <a href="#safety">Safety Tips</a>
-                <a href="#join">कैसे Join करें</a>
-                <a href="#create">Group बनाएं</a>
-                <a href="#faq">सवाल-जवाब</a>
-            </div>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="index.html">Home</a> > <span>Girls WhatsApp Groups</span>
         </div>
     </div>
 
-    <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1>Girls WhatsApp Group - सुरक्षित और अच्छे Groups</h1>
+            <p>जानें कैसे सही Girls WhatsApp Groups ढूंढें और सुरक्षित तरीके से Connect करें</p>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">50+</div>
+                    <div>Verified Groups</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">10K+</div>
+                    <div>Active Members</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div>Safe & Secure</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">8+</div>
+                    <div>Categories</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-container">
         <!-- Introduction -->
-        <section class="content-section" id="intro">
+        <section class="blog-content">
             <h2 class="section-title">Girls WhatsApp Groups के बारे में</h2>
             
             <div class="intro-box">
@@ -384,7 +571,7 @@
         </section>
 
         <!-- Safety Alert -->
-        <section class="content-section">
+        <section class="blog-content">
             <h2 class="section-title">⚠️ Important Safety Tips</h2>
             
             <div class="safety-alert">
@@ -424,7 +611,7 @@
         </section>
 
         <!-- Types of Groups -->
-        <section class="content-section" id="types">
+        <section class="blog-content">
             <h2 class="section-title">Girls WhatsApp Groups के प्रकार</h2>
             
             <div class="groups-list">
@@ -434,12 +621,17 @@
                         <div class="group-item">
                             <div class="group-name">Girls Study Group</div>
                             <p>Exam Preparation और Study Materials Sharing</p>
-                            <button class="join-btn">Join Group</button>
+                            <a href="#" class="join-btn">Join Group</a>
                         </div>
                         <div class="group-item">
                             <div class="group-name">Career Guidance</div>
                             <p>Job Opportunities और Career Advice</p>
-                            <button class="join-btn">Join Group</button>
+                            <a href="#" class="join-btn">Join Group</a>
+                        </div>
+                        <div class="group-item">
+                            <div class="group-name">Programming Girls</div>
+                            <p>Coding और Tech Discussions</p>
+                            <a href="#" class="join-btn">Join Group</a>
                         </div>
                     </div>
                 </div>
@@ -450,12 +642,17 @@
                         <div class="group-item">
                             <div class="group-name">Fashion & Beauty Tips</div>
                             <p>Latest Fashion Trends और Beauty Advice</p>
-                            <button class="join-btn">Join Group</button>
+                            <a href="#" class="join-btn">Join Group</a>
                         </div>
                         <div class="group-item">
                             <div class="group-name">Health & Fitness</div>
                             <p>Health Tips और Workout Routines</p>
-                            <button class="join-btn">Join Group</button>
+                            <a href="#" class="join-btn">Join Group</a>
+                        </div>
+                        <div class="group-item">
+                            <div class="group-name">Cooking & Recipes</div>
+                            <p>Healthy Recipes और Cooking Tips</p>
+                            <a href="#" class="join-btn">Join Group</a>
                         </div>
                     </div>
                 </div>
@@ -466,12 +663,38 @@
                         <div class="group-item">
                             <div class="group-name">Friendship Group</div>
                             <p>New Friends बनाने और Chat करने के लिए</p>
-                            <button class="join-btn">Join Group</button>
+                            <a href="#" class="join-btn">Join Group</a>
                         </div>
                         <div class="group-item">
                             <div class="group-name">Hobbies & Interests</div>
                             <p>Common Hobbies वाली Girls के साथ Connect</p>
-                            <button class="join-btn">Join Group</button>
+                            <a href="#" class="join-btn">Join Group</a>
+                        </div>
+                        <div class="group-item">
+                            <div class="group-name">Travel Buddies</div>
+                            <p>Travel Experiences और Trip Planning</p>
+                            <a href="#" class="join-btn">Join Group</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group-category">
+                    <h3 class="category-title">💼 Professional Groups</h3>
+                    <div class="group-items">
+                        <div class="group-item">
+                            <div class="group-name">Women Entrepreneurs</div>
+                            <p>Business Ideas और Entrepreneurship</p>
+                            <a href="#" class="join-btn">Join Group</a>
+                        </div>
+                        <div class="group-item">
+                            <div class="group-name">Working Professionals</div>
+                            <p>Career Growth और Professional Networking</p>
+                            <a href="#" class="join-btn">Join Group</a>
+                        </div>
+                        <div class="group-item">
+                            <div class="group-name">Freelancers Network</div>
+                            <p>Freelancing Opportunities और Collaboration</p>
+                            <a href="#" class="join-btn">Join Group</a>
                         </div>
                     </div>
                 </div>
@@ -479,7 +702,7 @@
         </section>
 
         <!-- How to Join -->
-        <section class="content-section" id="join">
+        <section class="blog-content">
             <h2 class="section-title">सुरक्षित तरीके से Girls Group कैसे Join करें</h2>
             
             <div class="step-container">
@@ -526,7 +749,7 @@
         </section>
 
         <!-- Create Group -->
-        <section class="content-section" id="create">
+        <section class="blog-content">
             <h2 class="section-title">अपना Girls WhatsApp Group कैसे बनाएं</h2>
             
             <p>अगर आपको सही Group नहीं मिल रहा है, तो आप खुद का Group बना सकती हैं:</p>
@@ -567,7 +790,7 @@
         </section>
 
         <!-- FAQ -->
-        <section class="content-section" id="faq">
+        <section class="blog-content">
             <h2 class="section-title">Girls WhatsApp Groups के बारे में सवाल-जवाब</h2>
             
             <div class="faq-item">
@@ -606,43 +829,92 @@
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-links">
-                <a href="#">Home</a>
-                <a href="#">About Us</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Group Share</h3>
+                <p>WhatsApp Groups की सबसे बड़ी directory। दुनिया भर के communities से connect हों।</p>
             </div>
-            <p>&copy; 2023 Group Share. All rights reserved. | Safe and Verified WhatsApp Groups</p>
-            <p style="margin-top: 1rem; font-size: 0.9rem; color: #ccc;">Stay Safe Online - Never Share Personal Information</p>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="groups.html">Find Groups</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect With Us</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Group Share. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
     <script>
-        // Simple JavaScript for interactivity
         document.addEventListener('DOMContentLoaded', function() {
             // Update year in footer
-            document.querySelector('footer p').innerHTML = 
-                document.querySelector('footer p').innerHTML.replace('2023', new Date().getFullYear());
+            document.querySelector('.footer-bottom p').innerHTML = 
+                document.querySelector('.footer-bottom p').innerHTML.replace('2023', new Date().getFullYear());
             
-            // Smooth scrolling for navigation links
+            // Join button functionality with toast notification
+            document.querySelectorAll('.join-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const groupName = this.closest('.group-item').querySelector('.group-name').textContent;
+                    
+                    // Show loading state
+                    const originalText = this.innerHTML;
+                    this.innerHTML = 'Joining...';
+                    this.style.opacity = '0.7';
+                    
+                    // Simulate API call delay
+                    setTimeout(() => {
+                        // Show success toast
+                        showToast(`Successfully joined "${groupName}"!`);
+                        
+                        // Reset button
+                        this.innerHTML = originalText;
+                        this.style.opacity = '1';
+                    }, 1500);
+                });
+            });
+            
+            // Toast notification function
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Smooth scrolling for navigation
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                });
-            });
-            
-            // Join button functionality
-            document.querySelectorAll('.join-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    alert('Safety First! Please visit Group Share website to join verified and safe girls WhatsApp groups.');
+                    if(targetId.startsWith('#')) return;
+                    // For external links, let them work normally
                 });
             });
         });
