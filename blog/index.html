@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <title>Group Share – Join & Share WhatsApp Groups Instantly</title>
+<meta name="description" content="Join trending WhatsApp groups instantly on Group Share. Create and share your own group links to grow communities easily.">
+<meta name="keywords" content="WhatsApp groups, Group Share, join WhatsApp groups, share group links, trending groups">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Group Share – Join & Share WhatsApp Groups">
+<meta property="og:description" content="Join thousands of WhatsApp groups instantly with Group Share. Grow your communities easily.">
+<meta property="og:url" content="https://groupshare.in/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://groupshare.in/thumbnail.jpg">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Share - Find & Share WhatsApp Groups Worldwide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --whatsapp-green: #25D366;
+            --whatsapp-dark-green: #128C7E;
+            --whatsapp-light-green: #dcf8c6;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--whatsapp-green);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .hamburger-menu {
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            color: var(--dark-gray);
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            width: 200px;
+            z-index: 101;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--dark-gray);
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--light-gray);
+        }
+
+        /* Search Section */
+        .search-section {
+            background-color: var(--whatsapp-dark-green);
+            padding: 1.5rem 2rem;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--whatsapp-green);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--whatsapp-green);
+            color: var(--whatsapp-dark-green);
+        }
+
+        /* Add Group Section */
+        .add-group-section {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--whatsapp-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--whatsapp-dark-green);
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 0.5rem;
+        }
+
+        .word-count {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .word-count.warning {
+            color: #ff6b6b;
+        }
+
+        /* Manual Upload Section */
+        .upload-section {
+            background-color: var(--whatsapp-light-green);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .group-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .group-preview-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--whatsapp-light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .group-preview-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .group-preview-info {
+            flex: 1;
+        }
+
+        .group-preview-name {
+            font-weight: bold;
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 5px;
+        }
+
+        .upload-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .rules-section {
+            background-color: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .rules-section h3 {
+            margin-bottom: 1rem;
+            color: var(--whatsapp-dark-green);
+        }
+
+        .rules-section ul {
+            padding-left: 1.5rem;
+        }
+
+        .rules-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Groups Display */
+        .groups-section {
+            margin-top: 2rem;
+        }
+
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .group-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .group-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .group-header {
+            display: flex;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .group-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--whatsapp-light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--whatsapp-dark-green);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .group-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .group-info {
+            flex: 1;
+        }
+
+        .group-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--whatsapp-dark-green);
+        }
+
+        .group-meta {
+            font-size: 0.9rem;
+            color: #777;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .group-meta span {
+            background-color: var(--light-gray);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .group-body {
+            padding: 1rem;
+        }
+
+        .group-description-container {
+            margin-bottom: 1rem;
+        }
+
+        .group-description {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #555;
+        }
+
+        .group-description.short {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: var(--whatsapp-green);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 5px 0;
+            margin-top: 5px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .read-more-btn:hover {
+            text-decoration: underline;
+        }
+
+        .group-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .join-btn {
+            background-color: var(--whatsapp-green);
+            color: white;
+            border: none;
+        }
+
+        .share-btn {
+            background-color: transparent;
+            border: 1px solid var(--whatsapp-green);
+            color: var(--whatsapp-green);
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--whatsapp-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--whatsapp-dark-green);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--whatsapp-green);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            z-index: 300;
+            display: none;
+        }
+
+        .toast.error {
+            background-color: #ff5252;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+
+        /* Terms Modal Specific Styles */
+        .terms-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .terms-content h3 {
+            color: var(--whatsapp-dark-green);
+            margin-bottom: 1rem;
+        }
+
+        .terms-content p {
+            margin-bottom: 1rem;
+        }
+
+        .terms-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terms-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .kids-rules {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .kids-rules h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+
+        .terms-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .terms-actions .btn {
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+        }
+
+        .btn-cancel:hover {
+            background-color: #545b62;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+
+            .search-section {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .add-group-section, .filter-section {
+                padding: 1.5rem;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .groups-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .terms-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .terms-actions .btn {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <a href="index.html">Group Share</a>
+            </div>
+            <div class="hamburger-menu" id="hamburgerMenu">
+                <i class="fas fa-bars"></i>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="index.html">Home</a>
+                    <a href="#" id="openAddGroupModal">Add Group</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="disclaimer.html">Disclaimer</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search WhatsApp Groups by name, category, or description...">
+                <i class="fas fa-search search-icon" id="searchIcon"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Add Group Section -->
+        <section class="add-group-section">
+            <h2 class="section-title">Share Your WhatsApp Group</h2>
+            <p>Reach more members by publishing your WhatsApp group on Group Share</p>
+            <button class="btn" id="openAddGroupBtn">
+                <i class="fas fa-plus"></i> Add WhatsApp Group
+            </button>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+            <h2 class="section-title">Find WhatsApp Groups</h2>
+            <div class="filter-form">
+                <div class="form-group">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter" class="form-control">
+                        <option value="">Any Category</option>
+                        <option value="Adult / 18+ / Hot">Adult / 18+ / Hot</option>
+                        <option value="Art / Design / Photography">Art / Design / Photography</option>
+                        <option value="Auto / Vehicles">Auto / Vehicles</option>
+                        <option value="Business / Advertising / Marketing">Business / Advertising / Marketing</option>
+                        <option value="Comedy / Funny">Comedy / Funny</option>
+                        <option value="Dating / Flirting / Chatting">Dating / Flirting / Chatting</option>
+                        <option value="Education / School / Learning">Education / School / Learning</option>
+                        <option value="Entertainment / Masti">Entertainment / Masti</option>
+                        <option value="Family / Relationships">Family / Relationships</option>
+                        <option value="Fan Club / Celebrities">Fan Club / Celebrities</option>
+                        <option value="Fashion / Style / Clothing">Fashion / Style / Clothing</option>
+                        <option value="Film / Animation">Film / Animation</option>
+                        <option value="Food / Drinks">Food / Drinks</option>
+                        <option value="Gaming / Apps">Gaming / Apps</option>
+                        <option value="Health / Beauty / Fitness">Health / Beauty / Fitness</option>
+                        <option value="Jobs / Career">Jobs / Career</option>
+                        <option value="Money / Earning">Money / Earning</option>
+                        <option value="Music / Audio / Songs">Music / Audio / Songs</option>
+                        <option value="News / Magazines / Politics">News / Magazines / Politics</option>
+                        <option value="Pets / Animals / Nature">Pets / Animals / Nature</option>
+                        <option value="Roleplay / Comics">Roleplay / Comics</option>
+                        <option value="Science / Technology">Science / Technology</option>
+                        <option value="Shopping / Buy & Sell">Shopping / Buy & Sell</option>
+                        <option value="Social / Friendship / Community">Social / Friendship / Community</option>
+                        <option value="Spiritual / Devotional">Spiritual / Devotional</option>
+                        <option value="Sports / Games">Sports / Games</option>
+                        <option value="Thoughts / Quotes / Jokes">Thoughts / Quotes / Jokes</option>
+                        <option value="Travel / Tourism">Travel / Tourism</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="countryFilter">Country</label>
+                    <select id="countryFilter" class="form-control">
+                        <option value="">Any Country</option>
+                        <option value="Afghanistan">Afghanistan</option>
+                        <option value="Albania">Albania</option>
+                        <option value="Algeria">Algeria</option>
+                        <option value="Andorra">Andorra</option>
+                        <option value="Angola">Angola</option>
+                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Armenia">Armenia</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Austria">Austria</option>
+                        <option value="Azerbaijan">Azerbaijan</option>
+                        <option value="Bahamas">Bahamas</option>
+                        <option value="Bahrain">Bahrain</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="Barbados">Barbados</option>
+                        <option value="Belarus">Belarus</option>
+                        <option value="Belgium">Belgium</option>
+                        <option value="Belize">Belize</option>
+                        <option value="Benin">Benin</option>
+                        <option value="Bhutan">Bhutan</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                        <option value="Botswana">Botswana</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="Brunei">Brunei</option>
+                        <option value="Bulgaria">Bulgaria</option>
+                        <option value="Burkina Faso">Burkina Faso</option>
+                        <option value="Burundi">Burundi</option>
+                        <option value="Cabo Verde">Cabo Verde</option>
+                        <option value="Cambodia">Cambodia</option>
+                        <option value="Cameroon">Cameroon</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Central African Republic">Central African Republic</option>
+                        <option value="Chad">Chad</option>
+                        <option value="Chile">Chile</option>
+                        <option value="China">China</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Comoros">Comoros</option>
+                        <option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
+                        <option value="Costa Rica">Costa Rica</option>
+                        <option value="Croatia">Croatia</option>
+                        <option value="Cuba">Cuba</option>
+                        <option value="Cyprus">Cyprus</option>
+                        <option value="Czechia (Czech Republic)">Czechia (Czech Republic)</option>
+                        <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+                        <option value="Denmark">Denmark</option>
+                        <option value="Djibouti">Djibouti</option>
+                        <option value="Dominica">Dominica</option>
+                        <option value="Dominican Republic">Dominican Republic</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="El Salvador">El Salvador</option>
+                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                        <option value="Eritrea">Eritrea</option>
+                        <option value="Estonia">Estonia</option>
+                        <option value="Eswatini">Eswatini</option>
+                        <option value="Ethiopia">Ethiopia</option>
+                        <option value="Fiji">Fiji</option>
+                        <option value="Finland">Finland</option>
+                        <option value="France">France</option>
+                        <option value="Gabon">Gabon</option>
+                        <option value="Gambia">Gambia</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Ghana">Ghana</option>
+                        <option value="Greece">Greece</option>
+                        <option value="Grenada">Grenada</option>
+                        <option value="Guatemala">Guatemala</option>
+                        <option value="Guinea">Guinea</option>
+                        <option value="Guinea-Bissau">Guinea-Bissau</option>
+                        <option value="Guyana">Guyana</option>
+                        <option value="Haiti">Haiti</option>
+                        <option value="Honduras">Honduras</option>
+                        <option value="Hungary">Hungary</option>
+                        <option value="Iceland">Iceland</option>
+                        <option value="India">India</option>
+                        <option value="Indonesia">Indonesia</option>
+                        <option value="Iran">Iran</option>
+                        <option value="Iraq">Iraq</option>
+                        <option value="Ireland">Ireland</option>
+                        <option value="Israel">Israel</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Jamaica">Jamaica</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Jordan">Jordan</option>
+                        <option value="Kazakhstan">Kazakhstan</option>
+                        <option value="Kenya">Kenya</option>
+                        <option value="Kiribati">Kiribati</option>
+                        <option value="Kuwait">Kuwait</option>
+                        <option value="Kyrgyzstan">Kyrgyzstan</option>
+                        <option value="Laos">Laos</option>
+                        <option value="Latvia">Latvia</option>
+                        <option value="Lebanon">Lebanon</option>
+                        <option value="Lesotho">Lesotho</option>
+                        <option value="Liberia">Liberia</option>
+                        <option value="Libya">Libya</option>
+                        <option value="Liechtenstein">Liechtenstein</option>
+                        <option value="Lithuania">Lithuania</option>
+                        <option value="Luxembourg">Luxembourg</option>
+                        <option value="Madagascar">Madagascar</option>
+                        <option value="Malawi">Malawi</option>
+                        <option value="Malaysia">Malaysia</option>
+                        <option value="Maldives">Maldives</option>
+                        <option value="Mali">Mali</option>
+                        <option value="Malta">Malta</option>
+                        <option value="Marshall Islands">Marshall Islands</option>
+                        <option value="Mauritania">Mauritania</option>
+                        <option value="Mauritius">Mauritius</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Micronesia">Micronesia</option>
+                        <option value="Moldova">Moldova</option>
+                        <option value="Monaco">Monaco</option>
+                        <option value="Mongolia">Mongolia</option>
+                        <option value="Montenegro">Montenegro</option>
+                        <option value="Morocco">Morocco</option>
+                        <option value="Mozambique">Mozambique</option>
+                        <option value="Myanmar (Burma)">Myanmar (Burma)</option>
+                        <option value="Namibia">Namibia</option>
+                        <option value="Nauru">Nauru</option>
+                        <option value="Nepal">Nepal</option>
+                        <option value="Netherlands">Netherlands</option>
+                        <option value="New Zealand">New Zealand</option>
+                        <option value="Nicaragua">Nicaragua</option>
+                        <option value="Niger">Niger</option>
+                        <option value="Nigeria">Nigeria</option>
+                        <option value="North Korea">North Korea</option>
+                        <option value="North Macedonia">North Macedonia</option>
+                        <option value="Norway">Norway</option>
+                        <option value="Oman">Oman</option>
+                        <option value="Pakistan">Pakistan</option>
+                        <option value="Palau">Palau</option>
+                        <option value="Palestine State">Palestine State</option>
+                        <option value="Panama">Panama</option>
+                        <option value="Papua New Guinea">Papua New Guinea</option>
+                        <option value="Paraguay">Paraguay</option>
+                        <option value="Peru">Peru</option>
+                        <option value="Philippines">Philippines</option>
+                        <option value="Poland">Poland</option>
+                        <option value="Portugal">Portugal</option>
+                        <option value="Qatar">Qatar</option>
+                        <option value="Romania">Romania</option>
+                        <option value="Russia">Russia</option>
+                        <option value="Rwanda">Rwanda</option>
+                        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                        <option value="Saint Lucia">Saint Lucia</option>
+                        <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                        <option value="Samoa">Samoa</option>
+                        <option value="San Marino">San Marino</option>
+                        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                        <option value="Saudi Arabia">Saudi Arabia</option>
+                        <option value="Senegal">Senegal</option>
+                        <option value="Serbia">Serbia</option>
+                        <option value="Seychelles">Seychelles</option>
+                        <option value="Sierra Leone">Sierra Leone</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="Slovakia">Slovakia</option>
+                        <option value="Slovenia">Slovenia</option>
+                        <option value="Solomon Islands">Solomon Islands</option>
+                        <option value="Somalia">Somalia</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="South Korea">South Korea</option>
+                        <option value="South Sudan">South Sudan</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Sri Lanka">Sri Lanka</option>
+                        <option value="Sudan">Sudan</option>
+                        <option value="Suriname">Suriname</option>
+                        <option value="Sweden">Sweden</option>
+                        <option value="Switzerland">Switzerland</option>
+                        <option value="Syria">Syria</option>
+                        <option value="Tajikistan">Tajikistan</option>
+                        <option value="Tanzania">Tanzania</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Timor-Leste">Timor-Leste</option>
+                        <option value="Togo">Togo</option>
+                        <option value="Tonga">Tonga</option>
+                        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                        <option value="Tunisia">Tunisia</option>
+                        <option value="Turkey">Turkey</option>
+                        <option value="Turkmenistan">Turkmenistan</option>
+                        <option value="Tuvalu">Tuvalu</option>
+                        <option value="Uganda">Uganda</option>
+                        <option value="Ukraine">Ukraine</option>
+                        <option value="United Arab Emirates">United Arab Emirates</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="United States of America">United States of America</option>
+                        <option value="Uruguay">Uruguay</option>
+                        <option value="Uzbekistan">Uzbekistan</option>
+                        <option value="Vanuatu">Vanuatu</option>
+                        <option value="Vatican City">Vatican City</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Vietnam">Vietnam</option>
+                        <option value="Yemen">Yemen</option>
+                        <option value="Zambia">Zambia</option>
+                        <option value="Zimbabwe">Zimbabwe</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="languageFilter">Language</label>
+                    <select id="languageFilter" class="form-control">
+                        <option value="">Any Language</option>
+                        <option value="Afrikaans">Afrikaans</option>
+                        <option value="Albanian">Albanian</option>
+                        <option value="Amharic">Amharic</option>
+                        <option value="Arabic">Arabic</option>
+                        <option value="Armenian">Armenian</option>
+                        <option value="Assamese">Assamese</option>
+                        <option value="Azerbaijani">Azerbaijani</option>
+                        <option value="Bengali">Bengali</option>
+                        <option value="Basque">Basque</option>
+                        <option value="Belarusian">Belarusian</option>
+                        <option value="Bodo">Bodo</option>
+                        <option value="Bosnian">Bosnian</option>
+                        <option value="Bulgarian">Bulgarian</option>
+                        <option value="Catalan">Catalan</option>
+                        <option value="Cebuano">Cebuano</option>
+                        <option value="Chichewa">Chichewa</option>
+                        <option value="Chinese (Simplified)">Chinese (Simplified)</option>
+                        <option value="Chinese (Traditional)">Chinese (Traditional)</option>
+                        <option value="Corsican">Corsican</option>
+                        <option value="Croatian">Croatian</option>
+                        <option value="Czech">Czech</option>
+                        <option value="Danish">Danish</option>
+                        <option value="Dogri">Dogri</option>
+                        <option value="Dutch">Dutch</option>
+                        <option value="English">English</option>
+                        <option value="Esperanto">Esperanto</option>
+                        <option value="Estonian">Estonian</option>
+                        <option value="Finnish">Finnish</option>
+                        <option value="French">French</option>
+                        <option value="Frisian">Frisian</option>
+                        <option value="Galician">Galician</option>
+                        <option value="Georgian">Georgian</option>
+                        <option value="German">German</option>
+                        <option value="Greek">Greek</option>
+                        <option value="Gujarati">Gujarati</option>
+                        <option value="Haitian Creole">Haitian Creole</option>
+                        <option value="Hausa">Hausa</option>
+                        <option value="Hawaiian">Hawaiian</option>
+                        <option value="Hebrew">Hebrew</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Hmong">Hmong</option>
+                        <option value="Hungarian">Hungarian</option>
+                        <option value="Icelandic">Icelandic</option>
+                        <option value="Igbo">Igbo</option>
+                        <option value="Indonesian">Indonesian</option>
+                        <option value="Irish">Irish</option>
+                        <option value="Italian">Italian</option>
+                        <option value="Japanese">Japanese</option>
+                        <option value="Javanese">Javanese</option>
+                        <option value="Kannada">Kannada</option>
+                        <option value="Kashmiri">Kashmiri</option>
+                        <option value="Kazakh">Kazakh</option>
+                        <option value="Khmer">Khmer</option>
+                        <option value="Kinyarwanda">Kinyarwanda</option>
+                        <option value="Konkani">Konkani</option>
+                        <option value="Korean">Korean</option>
+                        <option value="Kurdish (Kurmanji)">Kurdish (Kurmanji)</option>
+                        <option value="Kyrgyz">Kyrgyz</option>
+                        <option value="Lao">Lao</option>
+                        <option value="Latin">Latin</option>
+                        <option value="Latvian">Latvian</option>
+                        <option value="Lithuanian">Lithuanian</option>
+                        <option value="Luxembourgish">Luxembourgish</option>
+                        <option value="Maithili">Maithili</option>
+                        <option value="Malay">Malay</option>
+                        <option value="Malayalam">Malayalam</option>
+                        <option value="Maltese">Maltese</option>
+                        <option value="Manipuri (Meitei)">Manipuri (Meitei)</option>
+                        <option value="Marathi">Marathi</option>
+                        <option value="Mongolian">Mongolian</option>
+                        <option value="Myanmar (Burmese)">Myanmar (Burmese)</option>
+                        <option value="Nepali">Nepali</option>
+                        <option value="Norwegian">Norwegian</option>
+                        <option value="Odia">Odia</option>
+                        <option value="Pashto">Pashto</option>
+                        <option value="Persian">Persian</option>
+                        <option value="Polish">Polish</option>
+                        <option value="Portuguese">Portuguese</option>
+                        <option value="Punjabi">Punjabi</option>
+                        <option value="Romanian">Romanian</option>
+                        <option value="Russian">Russian</option>
+                        <option value="Sanskrit">Sanskrit</option>
+                        <option value="Santali">Santali</option>
+                        <option value="Samoan">Samoan</option>
+                        <option value="Scots Gaelic">Scots Gaelic</option>
+                        <option value="Serbian">Serbian</option>
+                        <option value="Sesotho">Sesotho</option>
+                        <option value="Shona">Shona</option>
+                        <option value="Sindhi">Sindhi</option>
+                        <option value="Sinhala">Sinhala</option>
+                        <option value="Slovak">Slovak</option>
+                        <option value="Slovenian">Slovenian</option>
+                        <option value="Somali">Somali</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="Sundanese">Sundanese</option>
+                        <option value="Swahili">Swahili</option>
+                        <option value="Swedish">Swedish</option>
+                        <option value="Tagalog (Filipino)">Tagalog (Filipino)</option>
+                        <option value="Tajik">Tajik</option>
+                        <option value="Tamil">Tamil</option>
+                        <option value="Tatar">Tatar</option>
+                        <option value="Telugu">Telugu</option>
+                        <option value="Thai">Thai</option>
+                        <option value="Turkish">Turkish</option>
+                        <option value="Turkmen">Turkmen</option>
+                        <option value="Ukrainian">Ukrainian</option>
+                        <option value="Urdu">Urdu</option>
+                        <option value="Uyghur">Uyghur</option>
+                        <option value="Uzbek">Uzbek</option>
+                        <option value="Vietnamese">Vietnamese</option>
+                        <option value="Welsh">Welsh</option>
+                        <option value="Xhosa">Xhosa</option>
+                        <option value="Yiddish">Yiddish</option>
+                        <option value="Yoruba">Yoruba</option>
+                        <option value="Zulu">Zulu</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; align-items: flex-end;">
+                    <button class="btn" id="findGroupsBtn">
+                        <i class="fas fa-search"></i> Find Groups
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Groups Display Section -->
+        <section class="groups-section">
+            <h2 class="section-title">Popular WhatsApp Groups</h2>
+            <div class="groups-grid" id="groupsGrid">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <p>Loading groups...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Group Modal -->
+    <div class="modal" id="addGroupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add WhatsApp Group</h2>
+                <span class="close-modal" id="closeAddGroupModal">&times;</span>
+            </div>
+            <form id="addGroupForm">
+                <div class="form-group">
+                    <label for="groupLink">WhatsApp Group Invite Link *</label>
+                    <input type="url" id="groupLink" class="form-control" required placeholder="https://chat.whatsapp.com/CluEPPD7DuiEkai8nxFiZP">
+                    <div class="form-note">Paste your WhatsApp group invite link</div>
+                </div>
+                
+                <!-- Manual Upload Section -->
+                <div class="upload-section">
+                    <h4>Group Information</h4>
+                    <div class="group-preview">
+                        <div class="group-preview-avatar">
+                            <i class="fab fa-whatsapp" id="previewIcon"></i>
+                            <img id="previewImage" style="display: none;" alt="Group Image">
+                        </div>
+                        <div class="group-preview-info">
+                            <div class="group-preview-name" id="previewName">Enter group details below</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupName">Group Name *</label>
+                        <input type="text" id="groupName" class="form-control" required placeholder="Enter your WhatsApp group name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="groupImage">Group Image URL</label>
+                        <input type="url" id="groupImage" class="form-control" placeholder="https://example.com/group-image.jpg">
+                        <div class="form-note">Paste direct image URL for group display picture</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageUpload">Upload Group Image</label>
+                        <input type="file" id="imageUpload" class="form-control" accept="image/*">
+                        <div class="form-note">Select group image from your device</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="groupCategory">Select Group Category *</label>
+                    <select id="groupCategory" class="form-control" required>
+                        <option value="">Select Category</option>
+                        <option value="Adult / 18+ / Hot">Adult / 18+ / Hot</option>
+                        <option value="Art / Design / Photography">Art / Design / Photography</option>
+                        <option value="Auto / Vehicles">Auto / Vehicles</option>
+                        <option value="Business / Advertising / Marketing">Business / Advertising / Marketing</option>
+                        <option value="Comedy / Funny">Comedy / Funny</option>
+                        <option value="Dating / Flirting / Chatting">Dating / Flirting / Chatting</option>
+                        <option value="Education / School / Learning">Education / School / Learning</option>
+                        <option value="Entertainment / Masti">Entertainment / Masti</option>
+                        <option value="Family / Relationships">Family / Relationships</option>
+                        <option value="Fan Club / Celebrities">Fan Club / Celebrities</option>
+                        <option value="Fashion / Style / Clothing">Fashion / Style / Clothing</option>
+                        <option value="Film / Animation">Film / Animation</option>
+                        <option value="Food / Drinks">Food / Drinks</option>
+                        <option value="Gaming / Apps">Gaming / Apps</option>
+                        <option value="Health / Beauty / Fitness">Health / Beauty / Fitness</option>
+                        <option value="Jobs / Career">Jobs / Career</option>
+                        <option value="Money / Earning">Money / Earning</option>
+                        <option value="Music / Audio / Songs">Music / Audio / Songs</option>
+                        <option value="News / Magazines / Politics">News / Magazines / Politics</option>
+                        <option value="Pets / Animals / Nature">Pets / Animals / Nature</option>
+                        <option value="Roleplay / Comics">Roleplay / Comics</option>
+                        <option value="Science / Technology">Science / Technology</option>
+                        <option value="Shopping / Buy & Sell">Shopping / Buy & Sell</option>
+                        <option value="Social / Friendship / Community">Social / Friendship / Community</option>
+                        <option value="Spiritual / Devotional">Spiritual / Devotional</option>
+                        <option value="Sports / Games">Sports / Games</option>
+                        <option value="Thoughts / Quotes / Jokes">Thoughts / Quotes / Jokes</option>
+                        <option value="Travel / Tourism">Travel / Tourism</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groupCountry">Select Group Country *</label>
+                    <select id="groupCountry" class="form-control" required>
+                        <option value="">Select Country</option>
+                        <option value="Afghanistan">Afghanistan</option>
+                        <option value="Albania">Albania</option>
+                        <option value="Algeria">Algeria</option>
+                        <option value="Andorra">Andorra</option>
+                        <option value="Angola">Angola</option>
+                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Armenia">Armenia</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Austria">Austria</option>
+                        <option value="Azerbaijan">Azerbaijan</option>
+                        <option value="Bahamas">Bahamas</option>
+                        <option value="Bahrain">Bahrain</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="Barbados">Barbados</option>
+                        <option value="Belarus">Belarus</option>
+                        <option value="Belgium">Belgium</option>
+                        <option value="Belize">Belize</option>
+                        <option value="Benin">Benin</option>
+                        <option value="Bhutan">Bhutan</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                        <option value="Botswana">Botswana</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="Brunei">Brunei</option>
+                        <option value="Bulgaria">Bulgaria</option>
+                        <option value="Burkina Faso">Burkina Faso</option>
+                        <option value="Burundi">Burundi</option>
+                        <option value="Cabo Verde">Cabo Verde</option>
+                        <option value="Cambodia">Cambodia</option>
+                        <option value="Cameroon">Cameroon</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Central African Republic">Central African Republic</option>
+                        <option value="Chad">Chad</option>
+                        <option value="Chile">Chile</option>
+                        <option value="China">China</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Comoros">Comoros</option>
+                        <option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
+                        <option value="Costa Rica">Costa Rica</option>
+                        <option value="Croatia">Croatia</option>
+                        <option value="Cuba">Cuba</option>
+                        <option value="Cyprus">Cyprus</option>
+                        <option value="Czechia (Czech Republic)">Czechia (Czech Republic)</option>
+                        <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+                        <option value="Denmark">Denmark</option>
+                        <option value="Djibouti">Djibouti</option>
+                        <option value="Dominica">Dominica</option>
+                        <option value="Dominican Republic">Dominican Republic</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="El Salvador">El Salvador</option>
+                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                        <option value="Eritrea">Eritrea</option>
+                        <option value="Estonia">Estonia</option>
+                        <option value="Eswatini">Eswatini</option>
+                        <option value="Ethiopia">Ethiopia</option>
+                        <option value="Fiji">Fiji</option>
+                        <option value="Finland">Finland</option>
+                        <option value="France">France</option>
+                        <option value="Gabon">Gabon</option>
+                        <option value="Gambia">Gambia</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Ghana">Ghana</option>
+                        <option value="Greece">Greece</option>
+                        <option value="Grenada">Grenada</option>
+                        <option value="Guatemala">Guatemala</option>
+                        <option value="Guinea">Guinea</option>
+                        <option value="Guinea-Bissau">Guinea-Bissau</option>
+                        <option value="Guyana">Guyana</option>
+                        <option value="Haiti">Haiti</option>
+                        <option value="Honduras">Honduras</option>
+                        <option value="Hungary">Hungary</option>
+                        <option value="Iceland">Iceland</option>
+                        <option value="India">India</option>
+                        <option value="Indonesia">Indonesia</option>
+                        <option value="Iran">Iran</option>
+                        <option value="Iraq">Iraq</option>
+                        <option value="Ireland">Ireland</option>
+                        <option value="Israel">Israel</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Jamaica">Jamaica</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Jordan">Jordan</option>
+                        <option value="Kazakhstan">Kazakhstan</option>
+                        <option value="Kenya">Kenya</option>
+                        <option value="Kiribati">Kiribati</option>
+                        <option value="Kuwait">Kuwait</option>
+                        <option value="Kyrgyzstan">Kyrgyzstan</option>
+                        <option value="Laos">Laos</option>
+                        <option value="Latvia">Latvia</option>
+                        <option value="Lebanon">Lebanon</option>
+                        <option value="Lesotho">Lesotho</option>
+                        <option value="Liberia">Liberia</option>
+                        <option value="Libya">Libya</option>
+                        <option value="Liechtenstein">Liechtenstein</option>
+                        <option value="Lithuania">Lithuania</option>
+                        <option value="Luxembourg">Luxembourg</option>
+                        <option value="Madagascar">Madagascar</option>
+                        <option value="Malawi">Malawi</option>
+                        <option value="Malaysia">Malaysia</option>
+                        <option value="Maldives">Maldives</option>
+                        <option value="Mali">Mali</option>
+                        <option value="Malta">Malta</option>
+                        <option value="Marshall Islands">Marshall Islands</option>
+                        <option value="Mauritania">Mauritania</option>
+                        <option value="Mauritius">Mauritius</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Micronesia">Micronesia</option>
+                        <option value="Moldova">Moldova</option>
+                        <option value="Monaco">Monaco</option>
+                        <option value="Mongolia">Mongolia</option>
+                        <option value="Montenegro">Montenegro</option>
+                        <option value="Morocco">Morocco</option>
+                        <option value="Mozambique">Mozambique</option>
+                        <option value="Myanmar (Burma)">Myanmar (Burma)</option>
+                        <option value="Namibia">Namibia</option>
+                        <option value="Nauru">Nauru</option>
+                        <option value="Nepal">Nepal</option>
+                        <option value="Netherlands">Netherlands</option>
+                        <option value="New Zealand">New Zealand</option>
+                        <option value="Nicaragua">Nicaragua</option>
+                        <option value="Niger">Niger</option>
+                        <option value="Nigeria">Nigeria</option>
+                        <option value="North Korea">North Korea</option>
+                        <option value="North Macedonia">North Macedonia</option>
+                        <option value="Norway">Norway</option>
+                        <option value="Oman">Oman</option>
+                        <option value="Pakistan">Pakistan</option>
+                        <option value="Palau">Palau</option>
+                        <option value="Palestine State">Palestine State</option>
+                        <option value="Panama">Panama</option>
+                        <option value="Papua New Guinea">Papua New Guinea</option>
+                        <option value="Paraguay">Paraguay</option>
+                        <option value="Peru">Peru</option>
+                        <option value="Philippines">Philippines</option>
+                        <option value="Poland">Poland</option>
+                        <option value="Portugal">Portugal</option>
+                        <option value="Qatar">Qatar</option>
+                        <option value="Romania">Romania</option>
+                        <option value="Russia">Russia</option>
+                        <option value="Rwanda">Rwanda</option>
+                        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                        <option value="Saint Lucia">Saint Lucia</option>
+                        <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                        <option value="Samoa">Samoa</option>
+                        <option value="San Marino">San Marino</option>
+                        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                        <option value="Saudi Arabia">Saudi Arabia</option>
+                        <option value="Senegal">Senegal</option>
+                        <option value="Serbia">Serbia</option>
+                        <option value="Seychelles">Seychelles</option>
+                        <option value="Sierra Leone">Sierra Leone</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="Slovakia">Slovakia</option>
+                        <option value="Slovenia">Slovenia</option>
+                        <option value="Solomon Islands">Solomon Islands</option>
+                        <option value="Somalia">Somalia</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="South Korea">South Korea</option>
+                        <option value="South Sudan">South Sudan</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Sri Lanka">Sri Lanka</option>
+                        <option value="Sudan">Sudan</option>
+                        <option value="Suriname">Suriname</option>
+                        <option value="Sweden">Sweden</option>
+                        <option value="Switzerland">Switzerland</option>
+                        <option value="Syria">Syria</option>
+                        <option value="Tajikistan">Tajikistan</option>
+                        <option value="Tanzania">Tanzania</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Timor-Leste">Timor-Leste</option>
+                        <option value="Togo">Togo</option>
+                        <option value="Tonga">Tonga</option>
+                        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                        <option value="Tunisia">Tunisia</option>
+                        <option value="Turkey">Turkey</option>
+                        <option value="Turkmenistan">Turkmenistan</option>
+                        <option value="Tuvalu">Tuvalu</option>
+                        <option value="Uganda">Uganda</option>
+                        <option value="Ukraine">Ukraine</option>
+                        <option value="United Arab Emirates">United Arab Emirates</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="United States of America">United States of America</option>
+                        <option value="Uruguay">Uruguay</option>
+                        <option value="Uzbekistan">Uzbekistan</option>
+                        <option value="Vanuatu">Vanuatu</option>
+                        <option value="Vatican City">Vatican City</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Vietnam">Vietnam</option>
+                        <option value="Yemen">Yemen</option>
+                        <option value="Zambia">Zambia</option>
+                        <option value="Zimbabwe">Zimbabwe</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groupLanguage">Select Group Language *</label>
+                    <select id="groupLanguage" class="form-control" required>
+                        <option value="">Select Language</option>
+                        <option value="Afrikaans">Afrikaans</option>
+                        <option value="Albanian">Albanian</option>
+                        <option value="Amharic">Amharic</option>
+                        <option value="Arabic">Arabic</option>
+                        <option value="Armenian">Armenian</option>
+                        <option value="Assamese">Assamese</option>
+                        <option value="Azerbaijani">Azerbaijani</option>
+                        <option value="Bengali">Bengali</option>
+                        <option value="Basque">Basque</option>
+                        <option value="Belarusian">Belarusian</option>
+                        <option value="Bodo">Bodo</option>
+                        <option value="Bosnian">Bosnian</option>
+                        <option value="Bulgarian">Bulgarian</option>
+                        <option value="Catalan">Catalan</option>
+                        <option value="Cebuano">Cebuano</option>
+                        <option value="Chichewa">Chichewa</option>
+                        <option value="Chinese (Simplified)">Chinese (Simplified)</option>
+                        <option value="Chinese (Traditional)">Chinese (Traditional)</option>
+                        <option value="Corsican">Corsican</option>
+                        <option value="Croatian">Croatian</option>
+                        <option value="Czech">Czech</option>
+                        <option value="Danish">Danish</option>
+                        <option value="Dogri">Dogri</option>
+                        <option value="Dutch">Dutch</option>
+                        <option value="English">English</option>
+                        <option value="Esperanto">Esperanto</option>
+                        <option value="Estonian">Estonian</option>
+                        <option value="Finnish">Finnish</option>
+                        <option value="French">French</option>
+                        <option value="Frisian">Frisian</option>
+                        <option value="Galician">Galician</option>
+                        <option value="Georgian">Georgian</option>
+                        <option value="German">German</option>
+                        <option value="Greek">Greek</option>
+                        <option value="Gujarati">Gujarati</option>
+                        <option value="Haitian Creole">Haitian Creole</option>
+                        <option value="Hausa">Hausa</option>
+                        <option value="Hawaiian">Hawaiian</option>
+                        <option value="Hebrew">Hebrew</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Hmong">Hmong</option>
+                        <option value="Hungarian">Hungarian</option>
+                        <option value="Icelandic">Icelandic</option>
+                        <option value="Igbo">Igbo</option>
+                        <option value="Indonesian">Indonesian</option>
+                        <option value="Irish">Irish</option>
+                        <option value="Italian">Italian</option>
+                        <option value="Japanese">Japanese</option>
+                        <option value="Javanese">Javanese</option>
+                        <option value="Kannada">Kannada</option>
+                        <option value="Kashmiri">Kashmiri</option>
+                        <option value="Kazakh">Kazakh</option>
+                        <option value="Khmer">Khmer</option>
+                        <option value="Kinyarwanda">Kinyarwanda</option>
+                        <option value="Konkani">Konkani</option>
+                        <option value="Korean">Korean</option>
+                        <option value="Kurdish (Kurmanji)">Kurdish (Kurmanji)</option>
+                        <option value="Kyrgyz">Kyrgyz</option>
+                        <option value="Lao">Lao</option>
+                        <option value="Latin">Latin</option>
+                        <option value="Latvian">Latvian</option>
+                        <option value="Lithuanian">Lithuanian</option>
+                        <option value="Luxembourgish">Luxembourgish</option>
+                        <option value="Maithili">Maithili</option>
+                        <option value="Malay">Malay</option>
+                        <option value="Malayalam">Malayalam</option>
+                        <option value="Maltese">Maltese</option>
+                        <option value="Manipuri (Meitei)">Manipuri (Meitei)</option>
+                        <option value="Marathi">Marathi</option>
+                        <option value="Mongolian">Mongolian</option>
+                        <option value="Myanmar (Burmese)">Myanmar (Burmese)</option>
+                        <option value="Nepali">Nepali</option>
+                        <option value="Norwegian">Norwegian</option>
+                        <option value="Odia">Odia</option>
+                        <option value="Pashto">Pashto</option>
+                        <option value="Persian">Persian</option>
+                        <option value="Polish">Polish</option>
+                        <option value="Portuguese">Portuguese</option>
+                        <option value="Punjabi">Punjabi</option>
+                        <option value="Romanian">Romanian</option>
+                        <option value="Russian">Russian</option>
+                        <option value="Sanskrit">Sanskrit</option>
+                        <option value="Santali">Santali</option>
+                        <option value="Samoan">Samoan</option>
+                        <option value="Scots Gaelic">Scots Gaelic</option>
+                        <option value="Serbian">Serbian</option>
+                        <option value="Sesotho">Sesotho</option>
+                        <option value="Shona">Shona</option>
+                        <option value="Sindhi">Sindhi</option>
+                        <option value="Sinhala">Sinhala</option>
+                        <option value="Slovak">Slovak</option>
+                        <option value="Slovenian">Slovenian</option>
+                        <option value="Somali">Somali</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="Sundanese">Sundanese</option>
+                        <option value="Swahili">Swahili</option>
+                        <option value="Swedish">Swedish</option>
+                        <option value="Tagalog (Filipino)">Tagalog (Filipino)</option>
+                        <option value="Tajik">Tajik</option>
+                        <option value="Tamil">Tamil</option>
+                        <option value="Tatar">Tatar</option>
+                        <option value="Telugu">Telugu</option>
+                        <option value="Thai">Thai</option>
+                        <option value="Turkish">Turkish</option>
+                        <option value="Turkmen">Turkmen</option>
+                        <option value="Ukrainian">Ukrainian</option>
+                        <option value="Urdu">Urdu</option>
+                        <option value="Uyghur">Uyghur</option>
+                        <option value="Uzbek">Uzbek</option>
+                        <option value="Vietnamese">Vietnamese</option>
+                        <option value="Welsh">Welsh</option>
+                        <option value="Xhosa">Xhosa</option>
+                        <option value="Yiddish">Yiddish</option>
+                        <option value="Yoruba">Yoruba</option>
+                        <option value="Zulu">Zulu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groupTags">Enter Tags (comma separated)</label>
+                    <input type="text" id="groupTags" class="form-control" placeholder="Funny, Jokes, Mumbai, Students">
+                    <div class="form-note">Separate tags with commas</div>
+                </div>
+                <div class="form-group">
+                    <label for="groupDescription">Group Info / Rules</label>
+                    <textarea id="groupDescription" class="form-control" placeholder="Describe your group, its purpose, and any rules members should follow (max 100 words)" maxlength="500"></textarea>
+                    <div class="word-count" id="wordCount">0/100 words</div>
+                    <div class="form-note">Max 100 words (approximately 500 characters)</div>
+                </div>
+                <button type="submit" class="btn" id="submitGroupBtn" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Submit for Review
+                </button>
+            </form>
+            <div class="rules-section">
+                <h3>Rules for Publishers</h3>
+                <ul>
+                    <li>Only genuine WhatsApp group links are allowed.</li>
+                    <li>Spam or repeated links will be rejected.</li>
+                    <li>Group image, name & description should be appropriate.</li>
+                    <li>For Adult groups, ensure all members are 18+ and content follows platform guidelines.</li>
+                    <li>Group Share reserves the right to remove any group anytime.</li>
+                </ul>
+                <p class="form-note" style="margin-top: 1rem;">Your group will be visible publicly after admin approval.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions Modal -->
+    <div class="modal" id="termsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Group Rules & Terms</h2>
+                <span class="close-modal" id="closeTermsModal">&times;</span>
+            </div>
+            <div class="terms-content">
+                <h3>Before joining this WhatsApp group, please read and agree to the following rules:</h3>
+                
+                <p>By joining this WhatsApp group, you agree to abide by the following rules and guidelines:</p>
+                
+                <h4>General Group Rules:</h4>
+                <ul>
+                    <li>Respect all group members and maintain a friendly environment</li>
+                    <li>No spamming, flooding, or sending excessive messages</li>
+                    <li>No sharing of inappropriate, offensive, or illegal content</li>
+                    <li>No promotion of other groups or services without admin permission</li>
+                    <li>Keep discussions relevant to the group's purpose</li>
+                    <li>No personal attacks, harassment, or bullying</li>
+                    <li>Respect the privacy of other members</li>
+                    <li>Follow WhatsApp's Terms of Service</li>
+                </ul>
+                
+                <div class="kids-rules">
+                    <h4><i class="fas fa-child"></i> Special Rules for Kids' Groups:</h4>
+                    <ul>
+                        <li><strong>Parental Supervision Required:</strong> Children under 13 should only join with parent/guardian supervision</li>
+                        <li><strong>No Personal Information:</strong> Never share personal details like address, school name, or phone number</li>
+                        <li><strong>Age-Appropriate Content Only:</strong> Share only content suitable for children</li>
+                        <li><strong>Be Kind Always:</strong> No bullying, teasing, or mean comments allowed</li>
+                        <li><strong>Tell an Adult:</strong> If something makes you uncomfortable, tell a parent or guardian immediately</li>
+                        <li><strong>No Stranger Danger:</strong> Don't share information with people you don't know in real life</li>
+                        <li><strong>Educational Focus:</strong> Keep conversations positive and educational</li>
+                    </ul>
+                    <p><strong>Note to Parents:</strong> Please monitor your child's group activities and educate them about online safety.</p>
+                </div>
+                
+                <h4>Important Notes:</h4>
+                <ul>
+                    <li>Group admins reserve the right to remove any member who violates these rules</li>
+                    <li>Your phone number will be visible to other group members</li>
+                    <li>Group Share is not responsible for any content or interactions within the group</li>
+                    <li>You can leave the group at any time if you're uncomfortable</li>
+                </ul>
+                
+                <p><strong>By clicking "Agree & Join", you acknowledge that you have read and agree to these rules.</strong></p>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="agreeTerms" required>
+                <label for="agreeTerms">I have read and agree to the group rules and terms of service, including the special rules for kids' safety</label>
+            </div>
+            
+            <div class="terms-actions">
+                <button class="btn btn-cancel" id="cancelJoinBtn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="btn" id="confirmJoinBtn" disabled>
+                    <i class="fab fa-whatsapp"></i> Agree & Join
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Footer -->
+    <footer>
+        <!-- Add this to the footer section, inside the .footer-links div -->
+<div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="#" id="openAddGroupModal">Add Group</a>
+    <a href="blog.html">Blog</a> <!-- New Blog link -->
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="disclaimer.html">Disclaimer</a>
+    <a href="contact.html">Contact</a>
+</div>
+        <p>&copy; 2025 Group Share. All rights reserved.</p>
+        <p>Find & Share WhatsApp Groups Worldwide — Instantly!</p>
+    </footer>
+
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://dbyomoccsnjsdlbqnfds.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRieW9tb2Njc25qc2RsYnFuZmRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NzM2MTcsImV4cCI6MjA3NjQ0OTYxN30.aR4SuLeR6DDkUNHLTr5EJeFAG9ChwortTTsTtuBbTFo';
+
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // DOM Elements
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const openAddGroupBtn = document.getElementById('openAddGroupBtn');
+        const openAddGroupModal = document.getElementById('openAddGroupModal');
+        const closeAddGroupModal = document.getElementById('closeAddGroupModal');
+        const addGroupModal = document.getElementById('addGroupModal');
+        const addGroupForm = document.getElementById('addGroupForm');
+        const submitGroupBtn = document.getElementById('submitGroupBtn');
+        const groupsGrid = document.getElementById('groupsGrid');
+        const findGroupsBtn = document.getElementById('findGroupsBtn');
+        const searchInput = document.getElementById('searchInput');
+        const searchIcon = document.getElementById('searchIcon');
+        const toast = document.getElementById('toast');
+        
+        // Terms Modal Elements
+        const termsModal = document.getElementById('termsModal');
+        const closeTermsModal = document.getElementById('closeTermsModal');
+        const agreeTermsCheckbox = document.getElementById('agreeTerms');
+        const confirmJoinBtn = document.getElementById('confirmJoinBtn');
+        const cancelJoinBtn = document.getElementById('cancelJoinBtn');
+        
+        // Manual upload elements
+        const groupLinkInput = document.getElementById('groupLink');
+        const previewName = document.getElementById('previewName');
+        const previewImage = document.getElementById('previewImage');
+        const previewIcon = document.getElementById('previewIcon');
+        const groupNameInput = document.getElementById('groupName');
+        const groupImageInput = document.getElementById('groupImage');
+        const imageUploadInput = document.getElementById('imageUpload');
+        const groupDescription = document.getElementById('groupDescription');
+        const wordCount = document.getElementById('wordCount');
+
+        // Variables to store current group link for joining
+        let currentGroupLink = '';
+
+        // Event Listeners
+        hamburgerMenu.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('show');
+        });
+
+        openAddGroupBtn.addEventListener('click', () => {
+            addGroupModal.classList.add('show');
+        });
+
+        openAddGroupModal.addEventListener('click', () => {
+            addGroupModal.classList.add('show');
+            dropdownMenu.classList.remove('show');
+        });
+
+        closeAddGroupModal.addEventListener('click', () => {
+            addGroupModal.classList.remove('show');
+            resetForm();
+        });
+
+        // Terms Modal Events
+        closeTermsModal.addEventListener('click', () => {
+            termsModal.classList.remove('show');
+            resetTermsModal();
+        });
+
+        cancelJoinBtn.addEventListener('click', () => {
+            termsModal.classList.remove('show');
+            resetTermsModal();
+        });
+
+        // Agree to terms checkbox
+        agreeTermsCheckbox.addEventListener('change', function() {
+            confirmJoinBtn.disabled = !this.checked;
+        });
+
+        // Confirm join button
+        confirmJoinBtn.addEventListener('click', () => {
+            if (agreeTermsCheckbox.checked && currentGroupLink) {
+                window.open(currentGroupLink, '_blank');
+                termsModal.classList.remove('show');
+                resetTermsModal();
+                showToast('Redirecting to WhatsApp...');
+            }
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === addGroupModal) {
+                addGroupModal.classList.remove('show');
+                resetForm();
+            }
+            if (e.target === termsModal) {
+                termsModal.classList.remove('show');
+                resetTermsModal();
+            }
+        });
+
+        // Manual name input sync with preview
+        groupNameInput.addEventListener('input', function() {
+            previewName.textContent = this.value || 'Enter group details below';
+        });
+
+        // Manual image URL input sync with preview
+        groupImageInput.addEventListener('input', function() {
+            if (this.value) {
+                previewImage.src = this.value;
+                previewImage.style.display = 'block';
+                previewIcon.style.display = 'none';
+            } else {
+                previewImage.style.display = 'none';
+                previewIcon.style.display = 'flex';
+            }
+        });
+
+        // Image upload handler
+        imageUploadInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    previewIcon.style.display = 'none';
+                    groupImageInput.value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Word count for description
+        groupDescription.addEventListener('input', function() {
+            const text = this.value.trim();
+            const words = text ? text.split(/\s+/).filter(word => word.length > 0) : [];
+            const wordCountValue = words.length;
+            
+            wordCount.textContent = `${wordCountValue}/100 words`;
+            
+            if (wordCountValue > 100) {
+                wordCount.classList.add('warning');
+                // Truncate to 100 words
+                const truncatedText = words.slice(0, 100).join(' ');
+                this.value = truncatedText;
+                wordCount.textContent = `100/100 words (truncated)`;
+            } else {
+                wordCount.classList.remove('warning');
+            }
+        });
+
+        // Search functionality
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        searchIcon.addEventListener('click', function() {
+            performSearch();
+        });
+
+        // Find Groups Button
+        findGroupsBtn.addEventListener('click', () => {
+            const category = document.getElementById('categoryFilter').value;
+            const country = document.getElementById('countryFilter').value;
+            const language = document.getElementById('languageFilter').value;
+            
+            filterGroups(category, country, language);
+        });
+
+        // Add Group Form Submission
+        addGroupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const groupLink = document.getElementById('groupLink').value;
+            const groupName = groupNameInput.value;
+            const groupImage = groupImageInput.value;
+            const category = document.getElementById('groupCategory').value;
+            const country = document.getElementById('groupCountry').value;
+            const language = document.getElementById('groupLanguage').value;
+            const tags = document.getElementById('groupTags').value;
+            const description = document.getElementById('groupDescription').value;
+            
+            // Validate word count
+            const wordCountValue = description.trim() ? description.trim().split(/\s+/).filter(word => word.length > 0).length : 0;
+            if (wordCountValue > 100) {
+                showToast('Description cannot exceed 100 words', true);
+                return;
+            }
+            
+            // Show loading state
+            submitGroupBtn.disabled = true;
+            submitGroupBtn.innerHTML = '<div class="loading"></div> Submitting...';
+            
+            try {
+                // Insert into existing groups_pending table
+                const { data, error } = await supabase
+                    .from('groups_pending')
+                    .insert([
+                        { 
+                            group_link: groupLink,
+                            group_name: groupName,
+                            group_image: groupImage,
+                            category: category,
+                            country: country,
+                            language: language,
+                            tags: tags,
+                            description: description,
+                            submitted_at: new Date()
+                        }
+                    ]);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                addGroupModal.classList.remove('show');
+                showToast('Group submitted for admin approval!');
+                addGroupForm.reset();
+                resetForm();
+            } catch (error) {
+                console.error('Error submitting group:', error);
+                showToast('Error submitting group. Please try again.', true);
+            } finally {
+                // Reset button state
+                submitGroupBtn.disabled = false;
+                submitGroupBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Review';
+            }
+        });
+
+        // Functions
+        function resetForm() {
+            previewName.textContent = 'Enter group details below';
+            previewImage.style.display = 'none';
+            previewIcon.style.display = 'flex';
+            wordCount.textContent = '0/100 words';
+            wordCount.classList.remove('warning');
+        }
+
+        function resetTermsModal() {
+            agreeTermsCheckbox.checked = false;
+            confirmJoinBtn.disabled = true;
+            currentGroupLink = '';
+        }
+
+        // Search function
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm) {
+                filterGroupsBySearch(searchTerm);
+            } else {
+                loadGroups();
+            }
+        }
+
+        async function filterGroupsBySearch(searchTerm) {
+            try {
+                const { data: groups, error } = await supabase
+                    .from('groups_approved')
+                    .select('*')
+                    .or(`group_name.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,tags.ilike.%${searchTerm}%`)
+                    .order('approved_at', { ascending: false });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                displayGroups(groups || []);
+                showToast(`Found ${groups?.length || 0} groups matching "${searchTerm}"`);
+            } catch (error) {
+                console.error('Error searching groups:', error);
+                showToast('Error searching groups. Please try again.', true);
+            }
+        }
+
+        async function loadGroups() {
+            try {
+                // Fetch approved groups from existing table
+                const { data: groups, error } = await supabase
+                    .from('groups_approved')
+                    .select('*')
+                    .order('approved_at', { ascending: false });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                displayGroups(groups || []);
+            } catch (error) {
+                console.error('Error loading groups:', error);
+                // Show sample groups if database is empty
+                displaySampleGroups();
+            }
+        }
+
+        function displayGroups(groups) {
+            if (groups.length === 0) {
+                displaySampleGroups();
+                return;
+            }
+            
+            groupsGrid.innerHTML = '';
+            
+            groups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                // Use ACTUAL group name from database
+                const groupName = group.group_name || "WhatsApp Group";
+                
+                // Use ACTUAL group image if available, otherwise use WhatsApp icon
+                const avatarContent = group.group_image 
+                    ? `<img src="${group.group_image}" alt="${groupName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                    : '';
+                
+                // Create description with read more functionality
+                const description = group.description || 'Join this WhatsApp group to connect with like-minded people.';
+                const needsReadMore = description.split(' ').length > 20;
+                const shortDescription = needsReadMore ? 
+                    description.split(' ').slice(0, 20).join(' ') + '...' : 
+                    description;
+                
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-avatar">
+                            ${avatarContent}
+                            <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
+                        </div>
+                        <div class="group-info">
+                            <div class="group-name">${groupName}</div>
+                            <div class="group-meta">
+                                <span>${group.category}</span>
+                                <span>${group.country}</span>
+                                <span>${group.language}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body">
+                        <div class="group-description-container">
+                            <div class="group-description ${needsReadMore ? 'short' : ''}" id="desc-${group.id}">
+                                ${needsReadMore ? shortDescription : description}
+                            </div>
+                            ${needsReadMore ? `
+                                <button class="read-more-btn" onclick="toggleReadMore(${group.id})" id="btn-${group.id}">
+                                    Read More
+                                </button>
+                            ` : ''}
+                        </div>
+                        <div class="group-actions">
+                            <button class="action-btn join-btn" onclick="showTermsModal('${group.group_link}')">
+                                <i class="fab fa-whatsapp"></i> Join Group
+                            </button>
+                            <button class="action-btn share-btn" onclick="shareGroup('${group.group_link}')">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Store the full description in a data attribute
+                if (needsReadMore) {
+                    groupCard.querySelector(`#desc-${group.id}`).setAttribute('data-full-description', description);
+                }
+                
+                groupsGrid.appendChild(groupCard);
+            });
+        }
+
+        // Show Terms Modal function
+        window.showTermsModal = function(groupLink) {
+            currentGroupLink = groupLink;
+            termsModal.classList.add('show');
+        };
+
+        // Toggle Read More functionality - FIXED VERSION
+        window.toggleReadMore = function(groupId) {
+            const descElement = document.getElementById(`desc-${groupId}`);
+            const btnElement = document.getElementById(`btn-${groupId}`);
+            const fullDescription = descElement.getAttribute('data-full-description');
+            
+            if (descElement.classList.contains('short')) {
+                // Expand to show full description
+                descElement.textContent = fullDescription;
+                descElement.classList.remove('short');
+                btnElement.textContent = 'Read Less';
+            } else {
+                // Collapse to show short description
+                const shortDescription = fullDescription.split(' ').slice(0, 20).join(' ') + '...';
+                descElement.textContent = shortDescription;
+                descElement.classList.add('short');
+                btnElement.textContent = 'Read More';
+            }
+        };
+
+        // Display sample groups if database is empty
+        function displaySampleGroups() {
+            const sampleGroups = [
+                {
+                    id: 1,
+                    group_name: "Tech Enthusiasts India",
+                    group_image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop&crop=face",
+                    category: "Science / Technology",
+                    country: "India",
+                    language: "English",
+                    description: "Join our community of tech lovers to discuss latest trends, programming, and innovations. Share knowledge and grow together in this amazing community of developers and tech enthusiasts from around the world. We discuss everything from web development to artificial intelligence and machine learning. Daily coding challenges, project collaborations, and tech news discussions make this group the perfect place for any tech enthusiast.",
+                    group_link: "https://chat.whatsapp.com/sample1"
+                },
+                {
+                    id: 2,
+                    group_name: "Kids Learning & Activities",
+                    group_image: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=150&h=150&fit=crop&crop=face",
+                    category: "Education / School / Learning",
+                    country: "Global",
+                    language: "English",
+                    description: "A safe space for kids to share educational content, fun activities, and learning resources. Parents and educators welcome to share age-appropriate content for children.",
+                    group_link: "https://chat.whatsapp.com/sample2"
+                },
+                {
+                    id: 3,
+                    group_name: "Movie Buffs Club",
+                    group_image: "https://images.unsplash.com/photo-1489599809505-7c8e1a8a6b0c?w=150&h=150&fit=crop&crop=face",
+                    category: "Entertainment / Masti",
+                    country: "Global",
+                    language: "English",
+                    description: "Discuss your favorite movies, share reviews, get recommendations and talk about latest releases in cinema. Join our film community today! We have weekly movie discussions, spoiler-free reviews, and recommendations for all genres. From Hollywood blockbusters to indie films and international cinema, our members share diverse perspectives and help you discover hidden cinematic gems you might have missed.",
+                    group_link: "https://chat.whatsapp.com/sample3"
+                }
+            ];
+            
+            groupsGrid.innerHTML = '';
+            
+            sampleGroups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                
+                const avatarContent = group.group_image 
+                    ? `<img src="${group.group_image}" alt="${group.group_name}">`
+                    : '';
+                
+                // Create description with read more functionality
+                const description = group.description;
+                const needsReadMore = description.split(' ').length > 20;
+                const shortDescription = needsReadMore ? 
+                    description.split(' ').slice(0, 20).join(' ') + '...' : 
+                    description;
+                
+                groupCard.innerHTML = `
+                    <div class="group-header">
+                        <div class="group-avatar">
+                            ${avatarContent}
+                            <i class="fab fa-whatsapp" style="${group.group_image ? 'display:none' : ''}"></i>
+                        </div>
+                        <div class="group-info">
+                            <div class="group-name">${group.group_name}</div>
+                            <div class="group-meta">
+                                <span>${group.category}</span>
+                                <span>${group.country}</span>
+                                <span>${group.language}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-body">
+                        <div class="group-description-container">
+                            <div class="group-description ${needsReadMore ? 'short' : ''}" id="desc-${group.id}">
+                                ${needsReadMore ? shortDescription : description}
+                            </div>
+                            ${needsReadMore ? `
+                                <button class="read-more-btn" onclick="toggleReadMore(${group.id})" id="btn-${group.id}">
+                                    Read More
+                                </button>
+                            ` : ''}
+                        </div>
+                        <div class="group-actions">
+                            <button class="action-btn join-btn" onclick="showTermsModal('${group.group_link}')">
+                                <i class="fab fa-whatsapp"></i> Join Group
+                            </button>
+                            <button class="action-btn share-btn" onclick="shareGroup('${group.group_link}')">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Store the full description in a data attribute
+                if (needsReadMore) {
+                    groupCard.querySelector(`#desc-${group.id}`).setAttribute('data-full-description', description);
+                }
+                
+                groupsGrid.appendChild(groupCard);
+            });
+        }
+
+        async function filterGroups(category, country, language) {
+            try {
+                let query = supabase
+                    .from('groups_approved')
+                    .select('*');
+                
+                if (category) {
+                    query = query.eq('category', category);
+                }
+                
+                if (country) {
+                    query = query.eq('country', country);
+                }
+                
+                if (language) {
+                    query = query.eq('language', language);
+                }
+                
+                const { data: groups, error } = await query.order('approved_at', { ascending: false });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                displayGroups(groups || []);
+            } catch (error) {
+                console.error('Error filtering groups:', error);
+                showToast('Error filtering groups. Please try again.', true);
+            }
+        }
+
+        function shareGroup(link) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'WhatsApp Group',
+                    text: 'Check out this WhatsApp group!',
+                    url: link,
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast('Group link copied to clipboard!');
+                });
+            }
+        }
+
+        function showToast(message, isError = false) {
+            toast.textContent = message;
+            toast.className = 'toast';
+            if (isError) {
+                toast.classList.add('error');
+            }
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGroups();
+        });
+    </script>
+</body>
+</html>
