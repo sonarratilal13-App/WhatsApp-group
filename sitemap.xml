@@ -71,4 +71,20 @@
     <loc>https://groupshare.in/blog/whatsapp-group-Link-2026.html</loc>
   </url>
 
+  <!-- New Blog Pages -->
+  <url>
+    <loc>https://groupshare.in/blog/YouTube-Subscribe-WhatsApp-Group-Links.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://groupshare.in/blog/USA-Dating-WhatsApp-Groups-Females.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- New Groupsor Alternative Page -->
+  <url>
+    <loc>https://groupshare.in/groupsor.html</loc>
+    <priority>0.9</priority>
+  </url>
+
 </urlset>
